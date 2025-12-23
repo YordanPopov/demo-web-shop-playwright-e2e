@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleDetection": "force",
+    "target": "ESNext",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "noImplicitOverride": true,
+    "paths": {
+      "@tests/*": ["./tests/*"]
+    }
+  }
+}
