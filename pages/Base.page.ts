@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 
-export abstract class BasePage {
+export default abstract class BasePage {
     protected URL: string;
     protected TITLE: string;
 
@@ -16,5 +16,9 @@ export abstract class BasePage {
 
     protected async isElementVisible(locator: Locator): Promise<void> {
         await expect(locator).toBeVisible({ timeout: 3000 });
+    }
+
+    protected async verifyPageTitle(title: string): Promise<void> {
+        await expect.soft(this.page).toHaveTitle(title);
     }
 }
