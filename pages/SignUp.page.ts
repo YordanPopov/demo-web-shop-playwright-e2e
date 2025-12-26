@@ -1,24 +1,8 @@
 import { Page, expect } from '@playwright/test';
+import { RegistrationData } from '@test-data/users.data';
 
 /* Page objects */
 import BasePage from '@pages/Base.page';
-
-interface RegistrationData {
-    gender?: 'male' | 'female';
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-}
-
-interface ValidationErrors {
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    password?: string;
-    confirmPassword?: string;
-}
 
 export default class SignUpPage extends BasePage {
     /* Page metadata */
