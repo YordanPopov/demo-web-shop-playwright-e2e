@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-interface RegistrationData {
+export interface RegistrationData {
     gender?: 'male' | 'female';
     firstName: string;
     lastName: string;
