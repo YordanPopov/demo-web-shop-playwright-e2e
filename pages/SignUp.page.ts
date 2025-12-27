@@ -1,8 +1,11 @@
 import { Page, expect } from '@playwright/test';
-import { RegistrationData } from '@test-data/users.data';
 
 /* Page objects */
 import BasePage from '@pages/Base.page';
+
+/* Types */
+import { RegistrationData } from '@test-data/users.data';
+import { ValidationErrors } from '@test-data/users.data';
 
 export default class SignUpPage extends BasePage {
     /* Page metadata */
@@ -24,7 +27,7 @@ export default class SignUpPage extends BasePage {
     /* Error messages */
     private readonly errors = {
         firstName: this.page.locator('span[data-valmsg-for="FirstName"]'),
-        lastNmae: this.page.locator('span[data-valmsg-for="LastName"]'),
+        lastName: this.page.locator('span[data-valmsg-for="LastName"]'),
         email: this.page.locator('span[data-valmsg-for="Email"]'),
         password: this.page.locator('span[data-valmsg-for="Password"]'),
         confirmPassword: this.page.locator('span[data-valmsg-for="ConfirmPassword"]'),
@@ -72,5 +75,18 @@ export default class SignUpPage extends BasePage {
 
     async verifyRegistration(): Promise<void> {
         await expect.soft(this.continueButton).toBeVisible();
+    }
+
+    async getValidationErrors(): Promise<ValidationErrors> {
+        const errors: ValidationErrors = {};
+
+        for (const [field, locator] of Object.entries(this.errors)) {
+            const text = await locator.textContent();
+            if (text?.trim()) {
+                errors[field as keyof ValidationErrors] = text.trim();
+            }
+        }
+
+        return errors;
     }
 }
