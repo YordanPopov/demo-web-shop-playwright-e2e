@@ -9,9 +9,40 @@ export interface RegistrationData {
     confirmPassword: string;
 }
 
-interface UserTestCase {
+export interface InvalidRegistrationData {
+    data: RegistrationData;
+    expectedErrors?: {
+        firstName?: string;
+        lastName?: string;
+        email?: string;
+        password?: string;
+        confirmPassword?: string;
+    };
+}
+
+export interface ValidationErrors {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+}
+
+interface RegisterTestCase {
     description: string;
     data: RegistrationData;
+}
+
+interface InvalidRegisterTestCase {
+    description: string;
+    data: RegistrationData;
+    expectedErrors?: {
+        firstName?: string;
+        lastName?: string;
+        email?: string;
+        password?: string;
+        confirmPassword?: string;
+    };
 }
 
 function generateUniqueEmail(): string {
@@ -47,7 +78,7 @@ function generateUser(overrides?: Partial<RegistrationData>): RegistrationData {
     };
 }
 
-export const VALID_USERS: UserTestCase[] = [
+export const VALID_USERS: RegisterTestCase[] = [
     {
         description: 'valid male user with generated data',
         data: generateUser({ gender: 'male' }),
@@ -63,5 +94,90 @@ export const VALID_USERS: UserTestCase[] = [
     {
         description: 'valid user with static reliable data',
         data: generateUser({ gender: 'male', firstName: 'John', lastName: 'Doe' }),
+    },
+];
+
+export const INVALID_DATA: InvalidRegisterTestCase[] = [
+    {
+        description: 'blank fields.',
+        data: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+        expectedErrors: {
+            firstName: 'First name is required.',
+            lastName: 'Last name is required.',
+            email: 'Email is required.',
+            password: 'Password is required.',
+            confirmPassword: 'Password is required.',
+        },
+    },
+    {
+        description: 'blank first name field.',
+        data: {
+            firstName: '',
+            lastName: 'test',
+            email: 'test@email.com',
+            password: 'p@ass1234',
+            confirmPassword: 'p@ass1234',
+        },
+        expectedErrors: {
+            firstName: 'First name is required.',
+        },
+    },
+    {
+        description: 'blank last name field.',
+        data: {
+            firstName: 'test',
+            lastName: '',
+            email: 'test@email.com',
+            password: 'p@ass1234',
+            confirmPassword: 'p@ass1234',
+        },
+        expectedErrors: {
+            lastName: 'Last name is required.',
+        },
+    },
+    {
+        description: 'blank email field.',
+        data: {
+            firstName: 'test',
+            lastName: 'test',
+            email: '',
+            password: 'p@ass1234',
+            confirmPassword: 'p@ass1234',
+        },
+        expectedErrors: {
+            email: 'Email is required.',
+        },
+    },
+    {
+        description: 'mismatched password.',
+        data: {
+            firstName: '',
+            lastName: 'test',
+            email: 'test@email.com',
+            password: 'p@ass1234',
+            confirmPassword: 'p@ass12345',
+        },
+        expectedErrors: {
+            confirmPassword: 'The password and confirmation password do not match.',
+        },
+    },
+    {
+        description: 'too short password',
+        data: {
+            firstName: 'test',
+            lastName: 'test',
+            email: 'test@email.com',
+            password: '123',
+            confirmPassword: '123',
+        },
+        expectedErrors: {
+            password: 'The password should have at least 6 characters.',
+        },
     },
 ];
