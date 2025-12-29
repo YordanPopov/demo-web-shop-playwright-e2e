@@ -4,8 +4,7 @@ import { Page, expect } from '@playwright/test';
 import PageFactory from '@pages/Page.factory';
 
 /* Types */
-import type { RegistrationData } from '@test-data/users.data';
-import type { ValidationErrors } from '@test-data/users.data';
+import type { RegistrationData, RegisterValidationErrors } from '@types';
 
 export default class SignUpSteps extends PageFactory {
     constructor(page: Page) {
@@ -20,7 +19,7 @@ export default class SignUpSteps extends PageFactory {
 
     async attemptRegisterUser(
         invalidData: RegistrationData,
-        expectedErrors: ValidationErrors
+        expectedErrors: RegisterValidationErrors
     ): Promise<void> {
         await this.signUpPage.register(invalidData);
 

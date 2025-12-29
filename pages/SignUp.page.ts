@@ -4,8 +4,7 @@ import { Page, expect } from '@playwright/test';
 import BasePage from '@pages/Base.page';
 
 /* Types */
-import { RegistrationData } from '@test-data/users.data';
-import { ValidationErrors } from '@test-data/users.data';
+import type { RegistrationData, RegisterValidationErrors } from '@types';
 
 export default class SignUpPage extends BasePage {
     /* Page metadata */
@@ -77,13 +76,13 @@ export default class SignUpPage extends BasePage {
         await expect.soft(this.continueButton).toBeVisible();
     }
 
-    async getValidationErrors(): Promise<ValidationErrors> {
-        const errors: ValidationErrors = {};
+    async getValidationErrors(): Promise<RegisterValidationErrors> {
+        const errors: RegisterValidationErrors = {};
 
         for (const [field, locator] of Object.entries(this.errors)) {
             const text = await locator.textContent();
             if (text?.trim()) {
-                errors[field as keyof ValidationErrors] = text.trim();
+                errors[field as keyof RegisterValidationErrors] = text.trim();
             }
         }
 
