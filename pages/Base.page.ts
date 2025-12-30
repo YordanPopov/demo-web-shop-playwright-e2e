@@ -1,24 +1,20 @@
 import { Page, Locator, expect } from '@playwright/test';
 
-export default abstract class BasePage {
+export default class BasePage {
     protected URL: string;
     protected TITLE: string;
 
     constructor(protected page: Page) {}
 
-    protected async navigate(url: string): Promise<void> {
-        await this.page.goto(url);
+    async navigate(): Promise<void> {
+        await this.page.goto(this.URL);
     }
 
-    protected async waitForPageLoad(): Promise<void> {
+    async waitForPageLoad(): Promise<void> {
         await this.page.waitForLoadState('domcontentloaded');
     }
 
-    protected async isElementVisible(locator: Locator): Promise<void> {
+    async isElementVisible(locator: Locator): Promise<void> {
         await expect(locator).toBeVisible({ timeout: 3000 });
-    }
-
-    protected async verifyPageTitle(title: string): Promise<void> {
-        await expect.soft(this.page).toHaveTitle(title);
     }
 }
