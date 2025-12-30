@@ -1,14 +1,36 @@
 {
-  "compilerOptions": {
-    "module": "nodenext",
-    "moduleDetection": "force",
-    "target": "ESNext",
-    "sourceMap": true,
-    "noImplicitAny": false,
-    "esModuleInterop": true,
-    "noImplicitOverride": true,
-    "paths": {
-      "@tests/*": ["./tests/*"]
-    }
-  }
+    "compilerOptions": {
+        "module": "nodenext",
+        "moduleDetection": "force",
+        "target": "ESNext",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "esModuleInterop": true,
+        "noImplicitOverride": true,
+        "baseUrl": ".",
+        "paths": {
+            "@tests/*": ["./tests/*"],
+            "@pages/*": ["./pages/*"],
+            "@steps/*": ["./steps/*"],
+            "@components": ["./components/index.ts"],
+            "@fixtures/*": ["./fixtures/*"],
+            "@test-data/*": ["./fixtures/test-data/*"],
+            "@types/*": ["./types/*"],
+            "@types": ["./types/index.ts"]
+        }
+    },
+    "include": [
+        "tests/**/*",
+        "pages/**/*",
+        "steps/**/*",
+        "components/**/*",
+        "fixtures/**/*",
+        "types/**/*",
+        "utils/**/*",
+        "config/**/*",
+        "api/**/*",
+        "models/**/*",
+        "factories/**/*"
+    ],
+    "exclude": ["node_modules", "playwright-report", "test-results"]
 }
