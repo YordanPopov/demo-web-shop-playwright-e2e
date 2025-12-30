@@ -8,3 +8,8 @@ export interface LoginValidationErrors {
     global?: string;
     email?: string;
 }
+
+export interface LoginTestCase {
+    description: string;
+    data: LogInData;
+}
