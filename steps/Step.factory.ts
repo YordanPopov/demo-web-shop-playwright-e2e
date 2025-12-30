@@ -1,21 +1,28 @@
 import { test as base } from '@playwright/test';
 
-import SignUpSteps from '@steps/SignUp.steps';
 import SharedSteps from '@steps/Shared.steps';
+import LogInSteps from '@steps/LogIn.steps';
+import SignUpSteps from '@steps/SignUp.steps';
 
 type FrameworkFixtures = {
-    signUpSteps: SignUpSteps;
-
     sharedSteps: SharedSteps;
+
+    logInSteps: LogInSteps;
+
+    signUpSteps: SignUpSteps;
 };
 
 export const test = base.extend<FrameworkFixtures>({
-    signUpSteps: async ({ page }, use) => {
-        await use(new SignUpSteps(page));
-    },
-
     sharedSteps: async ({ page }, use) => {
         await use(new SharedSteps(page));
+    },
+
+    logInSteps: async ({ page }, use) => {
+        await use(new LogInSteps(page));
+    },
+
+    signUpSteps: async ({ page }, use) => {
+        await use(new SignUpSteps(page));
     },
 });
 
