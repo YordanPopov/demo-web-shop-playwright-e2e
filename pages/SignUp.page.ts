@@ -38,14 +38,6 @@ export default class SignUpPage extends BasePage {
         super(page);
     }
 
-    override async navigate(url: string): Promise<void> {
-        await this.page.goto(url);
-    }
-
-    override async verifyPageTitle(title: string): Promise<void> {
-        await expect.soft(this.page).toHaveTitle(title);
-    }
-
     async selectGender(gender: 'male' | 'female'): Promise<void> {
         const option = gender === 'male' ? this.form.genderMale : this.form.genderFemale;
         await option.check();
