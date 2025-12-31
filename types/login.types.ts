@@ -13,3 +13,20 @@ export interface LoginTestCase {
     description: string;
     data: LogInData;
 }
+
+export interface InvalidLoginData {
+    data: LogInData;
+    expectedErrors?: {
+        global?: string;
+        email?: string;
+    };
+}
+
+export interface invalidLoginTestCase {
+    description: string;
+    data: LogInData;
+    expectedError?: {
+        global?: string;
+        email?: string;
+    };
+}
