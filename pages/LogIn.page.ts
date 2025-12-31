@@ -7,7 +7,7 @@ import BasePage from '@pages/Base.page';
 import { HeaderComponent, FooterComponent } from '@components';
 
 /* Types */
-import type { LogInData } from '@types';
+import type { LogInData, LoginValidationErrors } from '@types';
 
 export default class LogInPage extends BasePage {
     /* Page metadata */
@@ -73,5 +73,18 @@ export default class LogInPage extends BasePage {
 
         expect(isLoggedIn).toBeTruthy();
         await expect(this.page).toHaveURL('/');
+    }
+
+    async getValidationErrors(): Promise<LoginValidationErrors> {
+        const errors: LoginValidationErrors = {};
+
+        for (const [field, locator] of Object.entries(this.errors)) {
+            const text = await locator.textContent();
+            if (text?.trim()) {
+                errors[field as keyof LoginValidationErrors] = text.trim();
+            }
+        }
+
+        return errors;
     }
 }
