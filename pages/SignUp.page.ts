@@ -3,6 +3,9 @@ import { Page, expect } from '@playwright/test';
 /* Page objects */
 import BasePage from '@pages/Base.page';
 
+/* Components */
+import { HeaderComponent } from '@components';
+
 /* Types */
 import type { RegistrationData, RegisterValidationErrors } from '@types';
 
@@ -10,6 +13,9 @@ export default class SignUpPage extends BasePage {
     /* Page metadata */
     override readonly URL = 'https://demowebshop.tricentis.com/register';
     override readonly TITLE = 'Demo Web Shop. Register';
+
+    /* Components */
+    private header: HeaderComponent;
 
     /* Form fields */
     private readonly form = {
@@ -36,6 +42,8 @@ export default class SignUpPage extends BasePage {
 
     constructor(page: Page) {
         super(page);
+
+        this.header = new HeaderComponent(page);
     }
 
     async selectGender(gender: 'male' | 'female'): Promise<void> {
@@ -65,7 +73,9 @@ export default class SignUpPage extends BasePage {
     }
 
     async verifyRegistration(): Promise<void> {
-        await expect.soft(this.continueButton).toBeVisible();
+        await this.continueButton.click();
+
+        expect(await this.header.isUserLoggedIn()).toBeTruthy();
     }
 
     async getValidationErrors(): Promise<RegisterValidationErrors> {
