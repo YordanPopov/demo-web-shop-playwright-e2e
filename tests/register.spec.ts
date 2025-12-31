@@ -2,47 +2,47 @@ import { test } from '@steps/Step.factory';
 import { VALID_USERS, INVALID_DATA } from '@test-data/register.data';
 
 test.describe('User registration - positive scenarios', () => {
-    for (const user of VALID_USERS) {
+    for (const testCase of VALID_USERS) {
         test(
-            `Registration ${user.description}`,
+            `Registration ${testCase.description}`,
             {
                 tag: ['@register', '@positive', '@smoke'],
                 annotation: [
-                    { type: 'scenarioInfo', description: `Register ${user.description}` },
-                    { type: 'firstName', description: user.data.firstName },
-                    { type: 'lastName', description: user.data.lastName },
-                    { type: 'email', description: user.data.email },
-                    { type: 'password', description: user.data.password },
+                    { type: 'scenarioInfo', description: `Register ${testCase.description}` },
+                    { type: 'firstName', description: testCase.data.firstName },
+                    { type: 'lastName', description: testCase.data.lastName },
+                    { type: 'email', description: testCase.data.email },
+                    { type: 'password', description: testCase.data.password },
                 ],
             },
             async ({ sharedSteps, signUpSteps }) => {
                 await sharedSteps.navigateToSignUpPage();
-                await signUpSteps.registerUser(user.data);
+                await signUpSteps.registerUser(testCase.data);
             }
         );
     }
 });
 
 test.describe('User registration - negative scenarios', () => {
-    for (const invalid of INVALID_DATA) {
+    for (const testCase of INVALID_DATA) {
         test(
-            `Attempt register with ${invalid.description}`,
+            `Attempt register with ${testCase.description}`,
             {
                 tag: ['@register', '@negative'],
                 annotation: [
                     {
                         type: 'scenarioInfo',
-                        description: `Attempt register with ${invalid.description}`,
+                        description: `Attempt register with ${testCase.description}`,
                     },
-                    { type: 'firstName', description: invalid.data.firstName },
-                    { type: 'lastName', description: invalid.data.lastName },
-                    { type: 'email', description: invalid.data.email },
-                    { type: 'password', description: invalid.data.password },
+                    { type: 'firstName', description: testCase.data.firstName },
+                    { type: 'lastName', description: testCase.data.lastName },
+                    { type: 'email', description: testCase.data.email },
+                    { type: 'password', description: testCase.data.password },
                 ],
             },
             async ({ sharedSteps, signUpSteps }) => {
                 await sharedSteps.navigateToSignUpPage();
-                await signUpSteps.attemptRegisterUser(invalid.data, invalid.expectedErrors);
+                await signUpSteps.attemptRegisterUser(testCase.data, testCase.expectedErrors);
             }
         );
     }
