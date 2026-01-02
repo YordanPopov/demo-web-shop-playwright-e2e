@@ -15,7 +15,9 @@ export class HeaderComponent {
 
     /* Cart & Wishlist */
     private readonly cartLink: Locator;
+    private readonly cartBadge: Locator;
     private readonly wishListLink: Locator;
+    private readonly wishListBadge: Locator;
 
     /* Search */
     private readonly searchInput: Locator;
@@ -34,6 +36,8 @@ export class HeaderComponent {
     private readonly desktopsLink: Locator;
     private readonly notebooksLink: Locator;
     private readonly accessoriesLink: Locator;
+    private readonly cameraPhotoLink: Locator;
+    private readonly cellPhonesLink: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -50,7 +54,9 @@ export class HeaderComponent {
 
         /* cart & WishList */
         this.cartLink = page.getByRole('link', { name: /Shopping cart/ });
+        this.cartBadge = page.locator('.cart-qty');
         this.wishListLink = page.getByRole('link', { name: /Wishlist/ });
+        this.wishListBadge = page.locator('.wishlist-qty');
 
         /* Search */
         this.searchInput = page.locator('#small-searchterms');
@@ -69,6 +75,8 @@ export class HeaderComponent {
         this.desktopsLink = page.locator('.top-menu a[href="/desktops"]');
         this.notebooksLink = page.locator('.top-menu a[href="/notebooks"]');
         this.accessoriesLink = page.locator('.top-menu a[href="/accessories"]');
+        this.cameraPhotoLink = page.locator('.top-menu a[href="/camera-photo"]');
+        this.cellPhonesLink = page.locator('.top-menu a[href="/cell-phones"]');
     }
 
     /* User authentication methods */
@@ -84,8 +92,16 @@ export class HeaderComponent {
         await this.logOutLink.click();
     }
 
+    async clickAccount(): Promise<void> {
+        await this.accountLink.click();
+    }
+
     async isUserLoggedIn(): Promise<boolean> {
         return await this.logOutLink.isVisible();
+    }
+
+    async isUserLoggedOut(): Promise<boolean> {
+        return await this.logInLink.isVisible();
     }
 
     async getLoggedInUserEmail(): Promise<string> {
@@ -121,9 +137,64 @@ export class HeaderComponent {
         await this.giftCardsLink.click();
     }
 
+    async navigateToShoppingCart(): Promise<void> {
+        await this.cartLink.click();
+    }
+
+    async navigateToWishList(): Promise<void> {
+        await this.wishListLink.click();
+    }
+
+    async navigateToCategory(category: string): Promise<void> {
+        switch (category.toLocaleLowerCase().trim()) {
+            case 'books':
+                await this.navigateToBooks();
+                break;
+            case 'computers':
+                await this.navigateToComputers();
+                break;
+            case 'electronics':
+                await this.navigateToElectronics();
+                break;
+            case 'apparel & shoes':
+                await this.navigateToApparelShoes();
+                break;
+            case 'digital downloads':
+                await this.navigateToDigitalsDownloads();
+                break;
+            case 'jewelry':
+                await this.navigateToJewelry();
+                break;
+            case 'gift cards':
+                await this.navigateToGiftCards();
+                break;
+            case 'desktops':
+                await this.navigateToDesktops();
+                break;
+            case 'notebooks':
+                await this.navigateToNotebooks();
+                break;
+            case 'accessories':
+                await this.navigateToAccessories();
+                break;
+            case 'camera, photo':
+                await this.navigateToCameraPhoto();
+                break;
+            case 'cell phones':
+                await this.navigateToCameraPhoto();
+                break;
+            default:
+                throw new Error(`Category "${category}" not found!`);
+        }
+    }
+
     /* Submenu methods */
     async hoverOverComputers(): Promise<void> {
         await this.computersLink.hover();
+    }
+
+    async hoverOverElectronics(): Promise<void> {
+        await this.electronicsLink.hover();
     }
 
     async navigateToDesktops(): Promise<void> {
@@ -141,6 +212,16 @@ export class HeaderComponent {
         await this.accessoriesLink.click();
     }
 
+    async navigateToCameraPhoto(): Promise<void> {
+        await this.hoverOverElectronics();
+        await this.cameraPhotoLink.click();
+    }
+
+    async navigateToCellPhones(): Promise<void> {
+        await this.hoverOverElectronics();
+        await this.cellPhonesLink.click();
+    }
+
     /* Search methods */
     async search(query: string): Promise<void> {
         await this.searchInput.fill(query);
@@ -156,7 +237,26 @@ export class HeaderComponent {
         await this.cartLink.click();
     }
 
+    async getCartItemCount(): Promise<number> {
+        const text = await this.cartBadge.textContent();
+        const count = text?.match(/\d+/);
+
+        return parseInt(count[0]);
+    }
+
     async openWishlist(): Promise<void> {
         await this.wishListLink.click();
+    }
+
+    async getWishListCount(): Promise<number> {
+        const text = await this.wishListBadge.textContent();
+        const count = text?.match(/\d+/);
+
+        return parseInt(count[0]);
+    }
+
+    /* Logo */
+    async clickLogo(): Promise<void> {
+        await this.logo.click();
     }
 }
