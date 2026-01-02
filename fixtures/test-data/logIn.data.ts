@@ -2,7 +2,7 @@ import { invalidLoginTestCase, LoginTestCase } from '@types';
 
 export const VALID_LOGIN_USERS: LoginTestCase[] = [
     {
-        description: 'with valid user without remember me.',
+        description: 'valid user without remember me.',
         data: {
             email: 'tester_yo@email.com',
             password: 'test1234',
@@ -10,7 +10,7 @@ export const VALID_LOGIN_USERS: LoginTestCase[] = [
         },
     },
     {
-        description: 'with valid user with remember me.',
+        description: 'valid user with remember me.',
         data: {
             email: 'tester_yo@email.com',
             password: 'test1234',
@@ -18,7 +18,7 @@ export const VALID_LOGIN_USERS: LoginTestCase[] = [
         },
     },
     {
-        description: 'with valid user without remember me option.',
+        description: 'valid user without remember me option.',
         data: {
             email: 'tester_yo@email.com',
             password: 'test1234',
