@@ -47,8 +47,20 @@ export default class HomePage extends BasePage {
         await this.header.clickLogOut();
     }
 
+    async navigateToCategory(category: string): Promise<void> {
+        await this.header.navigateToCategory(category);
+    }
+
     /* Home page specific methods */
     async isUserLoggedIn(): Promise<boolean> {
         return await this.header.isUserLoggedIn();
+    }
+
+    async isUserLoggedOut(): Promise<boolean> {
+        return await this.header.isUserLoggedOut();
+    }
+
+    async searchProduct(query: string): Promise<void> {
+        await this.header.search(query);
     }
 }
