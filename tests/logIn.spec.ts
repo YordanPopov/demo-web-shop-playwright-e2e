@@ -4,11 +4,11 @@ import { VALID_LOGIN_USERS, INVALID_LOGIN_DATA } from '@test-data/logIn.data';
 test.describe('Login user - positive scenarios', () => {
     for (const testCase of VALID_LOGIN_USERS) {
         test(
-            `Login ${testCase.description}`,
+            `Login with ${testCase.description}`,
             {
                 tag: ['@login', '@positive', '@smoke'],
                 annotation: [
-                    { type: 'ScenarioInfo', description: `Login ${testCase.description}` },
+                    { type: 'ScenarioInfo', description: `Login with ${testCase.description}` },
                     { type: 'Email', description: testCase.data.email },
                     { type: 'Password', description: testCase.data.password },
                     { type: 'Remember me?', description: `${testCase.data.rememberMe}` },
