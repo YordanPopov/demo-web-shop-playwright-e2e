@@ -30,6 +30,6 @@ export default class SharedSteps extends PageFactory {
     async logout(): Promise<void> {
         await this.homePage.logout();
 
-        expect(this.homePage.isUserLoggedIn()).toBeFalsy();
+        expect(await this.homePage.isUserLoggedOut()).toBeTruthy();
     }
 }
