@@ -63,4 +63,26 @@ export default class HomePage extends BasePage {
     async searchProduct(query: string): Promise<void> {
         await this.header.search(query);
     }
+
+    async getFeaturedPRoducts(): Promise<string[]> {
+        const products = await this.featuredProductCards.all();
+        let titles: string[] = [];
+
+        for (const product of products) {
+            const title = await product.locator('.product-title a').textContent();
+
+            if (title) {
+                titles.push(title);
+            }
+        }
+
+        return titles;
+    }
+
+    async addFeaturedProductToCart(index: number): Promise<void> {
+        await this.featuredProductCards
+            .nth(index)
+            .locator('.product-box-add-to-cart-button')
+            .click();
+    }
 }
