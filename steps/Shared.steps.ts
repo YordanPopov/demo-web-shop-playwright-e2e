@@ -14,14 +14,14 @@ export default class SharedSteps extends PageFactory {
     }
 
     async navigateToSignUpPage(): Promise<void> {
-        await this.homePage.navigate();
+        await this.navigateToHomePage();
         await this.homePage.navigateToRegister();
 
         await expect(this.page).toHaveTitle(this.signUpPage.TITLE);
     }
 
     async navigateToLoginPage(): Promise<void> {
-        await this.homePage.navigate();
+        await this.navigateToHomePage();
         await this.homePage.navigateToLogin();
 
         await expect(this.page).toHaveTitle(this.logInPage.TITLE);
