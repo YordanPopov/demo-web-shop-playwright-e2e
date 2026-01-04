@@ -3,6 +3,7 @@ import { test as base } from '@playwright/test';
 import SharedSteps from '@steps/Shared.steps';
 import LogInSteps from '@steps/LogIn.steps';
 import SignUpSteps from '@steps/SignUp.steps';
+import SearchSteps from '@steps/Search.steps';
 
 type FrameworkFixtures = {
     sharedSteps: SharedSteps;
@@ -10,6 +11,8 @@ type FrameworkFixtures = {
     logInSteps: LogInSteps;
 
     signUpSteps: SignUpSteps;
+
+    searchSteps: SearchSteps;
 };
 
 export const test = base.extend<FrameworkFixtures>({
@@ -23,6 +26,10 @@ export const test = base.extend<FrameworkFixtures>({
 
     signUpSteps: async ({ page }, use) => {
         await use(new SignUpSteps(page));
+    },
+
+    searchSteps: async ({ page }, use) => {
+        await use(new SearchSteps(page));
     },
 });
 
