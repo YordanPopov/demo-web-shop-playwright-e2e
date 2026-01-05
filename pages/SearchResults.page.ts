@@ -58,16 +58,6 @@ export default class SearchResultsPage extends BasePage {
     }
 
     /* Search methods */
-    async search(query: string): Promise<void> {
-        await this.searchInput.fill(query);
-        await this.searchButton.click();
-    }
-
-    async searchFromPage(query: string): Promise<void> {
-        await this.page.goto(this.URL);
-        await this.search(query);
-    }
-
     async advancedSearch(options: {
         query: string;
         category?: string;
@@ -131,5 +121,34 @@ export default class SearchResultsPage extends BasePage {
         }
 
         return titles;
+    }
+
+    /* Validation methods */
+    async allProductsContainKeyword(keyword: string): Promise<boolean> {
+        const titles = await this.getProductTitles();
+
+        return titles.every((title) => title.toLowerCase().includes(keyword.toLowerCase()));
+    }
+
+    /* Specific actions */
+    async clickProductByIndex(index: number): Promise<void> {
+        await this.foundProductCard.nth(index).locator('.picture a').click();
+    }
+
+    async clickProductByTitle(title: string): Promise<void> {
+        await this.foundProductCard.filter({ hasText: title }).click();
+    }
+
+    async addProductToCart(title: string): Promise<void> {
+        const productCard = this.foundProductCard.filter({ hasText: title });
+        const addToCartButton = productCard.locator('input[type="button"][value="Add to cart"]');
+
+        try {
+            addToCartButton.waitFor({ state: 'visible', timeout: 3000 });
+
+            addToCartButton.click();
+        } catch (error) {
+            throw new Error(`Failed to add product "${title}" to cart: ${error.message}`);
+        }
     }
 }
