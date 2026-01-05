@@ -9,7 +9,7 @@ export default class SearchResultsSteps extends PageFactory {
     }
 
     async searchProduct(query: string): Promise<void> {
-        await this.searchResultsPage.search(query);
+        await this.homePage.searchProduct(query);
     }
 
     async verifySearchResults(): Promise<void> {
@@ -24,9 +24,14 @@ export default class SearchResultsSteps extends PageFactory {
 
     async verifyNoResultsMessage(expectedMessage: string): Promise<void> {
         const hasResult = await this.searchResultsPage.hasResult();
-        expect.soft(hasResult).toBeTruthy();
+        expect.soft(hasResult).toBeFalsy();
 
         const message = await this.searchResultsPage.getNoResultsMessage();
         expect.soft(message).toContain(expectedMessage);
+    }
+
+    async verifyProductsContainKeyword(keyword: string): Promise<void> {
+        const containKeyword = await this.searchResultsPage.allProductsContainKeyword(keyword);
+        expect(containKeyword).toBeTruthy();
     }
 }
