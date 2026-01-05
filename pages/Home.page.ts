@@ -62,8 +62,6 @@ export default class HomePage extends BasePage {
 
     async searchProduct(query: string): Promise<void> {
         await this.header.search(query);
-
-        //
     }
 
     async getFeaturedProducts(): Promise<string[]> {
