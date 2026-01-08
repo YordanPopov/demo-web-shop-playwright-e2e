@@ -8,6 +8,7 @@ import { HeaderComponent, FooterComponent } from '@components';
 
 export default class SearchResultsPage extends BasePage {
     override readonly TITLE = 'Demo Web Shop. Search';
+    override readonly URL = 'https://demowebshop.tricentis.com/search';
 
     /* Components */
     private header: HeaderComponent;
