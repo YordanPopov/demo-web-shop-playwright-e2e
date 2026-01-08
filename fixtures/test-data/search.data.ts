@@ -78,41 +78,51 @@ export const NO_RESULTS_QUERIES: SearchTestCase[] = [
 
 export const VALID_ADVANCED_SEARCH_CASES: AdvancedSearchTestCase[] = [
     {
-        description: 'search with price range',
-        query: 'computer',
-        priceFrom: 500,
-        priceTo: 1500,
+        description: 'Search with price range',
+        searchData: {
+            query: 'computer',
+            priceFrom: 500,
+            priceTo: 1500,
+        },
         expectedCount: 3,
     },
 
     {
-        description: 'search in product description',
-        query: 'build',
-        searchInDescription: true,
+        description: 'Search in product description',
+        searchData: {
+            query: 'build',
+            searchInDescription: true,
+        },
         expectedCount: 4,
     },
 ];
 
 export const NO_RESULTS_ADVANCED_SEARCH_CASES: AdvancedSearchTestCase[] = [
     {
-        description: 'search in specific category',
-        query: 'laptop',
-        category: 'Computers',
+        description: 'Search in specific category',
+        searchData: {
+            query: 'laptop',
+            category: 'Computers',
+        },
         expectedMessage: 'No products',
     },
     {
-        description: 'combined advanced search',
-        query: 'laptop',
-        category: 'Computers',
-        priceFrom: 1000,
-        priceTo: 2000,
-        searchInDescription: true,
+        description: 'Combined advanced search',
+        searchData: {
+            query: 'laptop',
+            category: 'Computers',
+            priceFrom: 1000,
+            priceTo: 2000,
+            searchInDescription: true,
+        },
         expectedMessage: 'No products',
     },
     {
-        description: 'search by manufacturer',
-        query: '',
-        manufacturer: 'Tricentis',
+        description: 'Search by manufacturer',
+        searchData: {
+            query: '',
+            manufacturer: 'Tricentis',
+        },
         expectedMessage: 'minimum length is 3 characters',
     },
 ];

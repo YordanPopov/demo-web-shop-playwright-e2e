@@ -7,12 +7,14 @@ export interface SearchTestCase {
 
 export interface AdvancedSearchTestCase {
     description: string;
-    query: string;
-    category?: string;
-    manufacturer?: string;
-    priceFrom?: number;
-    priceTo?: number;
-    searchInDescription?: boolean;
+    searchData: {
+        query: string;
+        category?: string;
+        manufacturer?: string;
+        priceFrom?: number;
+        priceTo?: number;
+        searchInDescription?: boolean;
+    };
     expectedCount?: number;
     expectedMessage?: string;
 }
