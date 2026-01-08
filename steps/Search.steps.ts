@@ -3,6 +3,9 @@ import { Page, expect } from '@playwright/test';
 /* Page objects */
 import PageFactory from '@pages/Page.factory';
 
+/* Types */
+import {} from '@types';
+
 export default class SearchResultsSteps extends PageFactory {
     constructor(page: Page) {
         super(page);
@@ -10,6 +13,19 @@ export default class SearchResultsSteps extends PageFactory {
 
     async searchProduct(query: string): Promise<void> {
         await this.homePage.searchProduct(query);
+    }
+
+    async advancedSearchProduct(options: {
+        query: string;
+        category?: string;
+        manufacturer?: string;
+        priceFrom?: number;
+        priceTo?: number;
+        searchInDescription?: boolean;
+    }): Promise<void> {
+        await this.searchResultsPage.navigate();
+
+        await this.searchResultsPage.advancedSearch(options);
     }
 
     async verifySearchResults(): Promise<void> {
