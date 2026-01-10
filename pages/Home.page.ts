@@ -19,6 +19,8 @@ export default class HomePage extends BasePage {
     private readonly welcomeText: Locator;
     private readonly featuredProductsSection: Locator;
     private readonly featuredProductCards: Locator;
+    private readonly newsLetterInput: Locator;
+    private readonly newsLetterButton: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -32,6 +34,10 @@ export default class HomePage extends BasePage {
         this.welcomeText = page.locator('.topic-html-content-body');
         this.featuredProductsSection = page.locator('.home-page-product-grid');
         this.featuredProductCards = page.locator('.item-box');
+
+        /* Newsletter */
+        this.newsLetterInput = page.locator('#newsletter-email');
+        this.newsLetterButton = page.locator('#newsletter-subscribe-button');
     }
 
     /* Navigation methods */
@@ -52,6 +58,10 @@ export default class HomePage extends BasePage {
     }
 
     /* Home page specific methods */
+    async getWelcomeTitle(): Promise<string> {
+        return (await this.welcomeTitle.textContent()) || '';
+    }
+
     async isUserLoggedIn(): Promise<boolean> {
         return await this.header.isUserLoggedIn();
     }
@@ -84,5 +94,10 @@ export default class HomePage extends BasePage {
             .nth(index)
             .locator('.product-box-add-to-cart-button')
             .click();
+    }
+
+    async subscribeToNewsLetter(email: string): Promise<void> {
+        await this.newsLetterInput.fill(email);
+        await this.newsLetterButton.click();
     }
 }
