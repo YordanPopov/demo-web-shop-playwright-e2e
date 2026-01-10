@@ -27,6 +27,10 @@ export default class SharedSteps extends PageFactory {
         await expect(this.page).toHaveTitle(this.logInPage.TITLE);
     }
 
+    async navigateToCategory(category: string): Promise<void> {
+        await this.homePage.navigateToCategory(category);
+    }
+
     async logout(): Promise<void> {
         await this.homePage.logout();
 
