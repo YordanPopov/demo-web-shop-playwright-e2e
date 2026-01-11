@@ -51,6 +51,25 @@ export const VALID_USERS: RegisterTestCase[] = [
         description: 'valid user with static reliable data',
         data: generateUser({ gender: 'male', firstName: 'John', lastName: 'Doe' }),
     },
+    {
+        description: 'bulgarian user with Cyrillic characters',
+        data: {
+            gender: 'male',
+            firstName: 'Иван',
+            lastName: 'Иванов',
+            email: generateUniqueEmail(),
+            password: 'Парола123!',
+            confirmPassword: 'Парола123!',
+        },
+    },
+    {
+        description: 'german user with umlauts',
+        data: generateUser({ gender: 'male', firstName: 'Müller', lastName: 'Schröder' }),
+    },
+    {
+        description: 'french user with accents',
+        data: generateUser({ firstName: 'François', lastName: 'Bérénice' }),
+    },
 ];
 
 export const INVALID_DATA: InvalidRegisterTestCase[] = [
@@ -108,6 +127,33 @@ export const INVALID_DATA: InvalidRegisterTestCase[] = [
         },
         expectedErrors: {
             email: 'Email is required.',
+        },
+    },
+    {
+        description: 'invalid email format - missing domain',
+        data: {
+            firstName: 'test',
+            lastName: 'test',
+            email: 'tester@',
+            password: 'p@ss1234',
+            confirmPassword: 'p@ss1234',
+        },
+        expectedErrors: {
+            email: 'Wrong email',
+        },
+    },
+    {
+        description: 'blank password fields',
+        data: {
+            firstName: 'test',
+            lastName: 'test',
+            email: 'test@email.com',
+            password: '',
+            confirmPassword: '',
+        },
+        expectedErrors: {
+            password: 'Password is required.',
+            confirmPassword: 'Password is required.',
         },
     },
     {
