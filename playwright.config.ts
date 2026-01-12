@@ -32,7 +32,7 @@ export default defineConfig({
         trace: 'on-first-retry',
 
         launchOptions: {
-            slowMo: 0,
+            slowMo: 500,
         },
     },
     /* Configure projects for major browsers */
