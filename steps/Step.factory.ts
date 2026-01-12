@@ -4,6 +4,7 @@ import SharedSteps from '@steps/Shared.steps';
 import LogInSteps from '@steps/LogIn.steps';
 import SignUpSteps from '@steps/SignUp.steps';
 import SearchSteps from '@steps/Search.steps';
+import CategorySteps from '@steps/Category.steps';
 
 type FrameworkFixtures = {
     sharedSteps: SharedSteps;
@@ -13,6 +14,8 @@ type FrameworkFixtures = {
     signUpSteps: SignUpSteps;
 
     searchSteps: SearchSteps;
+
+    categorySteps: CategorySteps;
 };
 
 export const test = base.extend<FrameworkFixtures>({
@@ -31,6 +34,8 @@ export const test = base.extend<FrameworkFixtures>({
     searchSteps: async ({ page }, use) => {
         await use(new SearchSteps(page));
     },
-});
 
-export { expect } from '@playwright/test';
+    categorySteps: async ({ page }, use) => {
+        await use(new CategorySteps(page));
+    },
+});
