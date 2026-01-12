@@ -82,4 +82,51 @@ export default class CategoryPage extends BasePage {
         await this.page.goto(`${this.URL}/${category}`);
         await this.page.waitForLoadState('domcontentloaded');
     }
+
+    /* Product methods */
+    async getProductsCount(): Promise<number> {
+        return await this.productCard.count();
+    }
+
+    async getProductTitles(): Promise<string[]> {
+        return await this.productTitles.allTextContents();
+    }
+
+    async getProductPrices(): Promise<number[]> {
+        const priceTexts = await this.productPrices.allTextContents();
+        return await priceTexts.map((text) => parseFloat(text.replace(/[^\d.]/g, '')));
+    }
+
+    async hasProducts(): Promise<boolean> {
+        return (await this.getProductsCount()) > 0;
+    }
+
+    async clickProduct(index: number): Promise<void> {
+        await this.productCard.nth(index).locator('.product-title a').click();
+    }
+
+    async clickProductByTitle(title: string): Promise<void> {
+        await this.productCard.filter({ hasText: title }).first().click();
+    }
+
+    async addProductToCart(index: number): Promise<void> {
+        const addToCartButton = this.addToCartButtons.nth(index);
+
+        if ((await addToCartButton.count()) > 0) {
+            await addToCartButton.click();
+        } else {
+            throw new Error(`Product with index: ${index} does not have "Add to cart" button!`);
+        }
+    }
+
+    async addProductToCartByTitle(title: string): Promise<void> {
+        const productCard = this.productCard.filter({ hasText: title });
+        const addToCartButton = productCard.locator('.product-box-add-to-cart-button');
+
+        if ((await addToCartButton.count()) === 0) {
+            throw new Error(`Product with title: ${title} does not have "Add to cart" button!`);
+        }
+
+        await addToCartButton.click();
+    }
 }
