@@ -7,7 +7,7 @@ import BasePage from '@pages/Base.page';
 import { HeaderComponent, FooterComponent } from '@components';
 
 /* Types */
-import { Category } from '@types';
+import { Category, SortByOptions } from '@types';
 
 export default class CategoryPage extends BasePage {
     override readonly URL = 'https://demowebshop.tricentis.com/';
@@ -94,7 +94,7 @@ export default class CategoryPage extends BasePage {
 
     async getProductPrices(): Promise<number[]> {
         const priceTexts = await this.productPrices.allTextContents();
-        return await priceTexts.map((text) => parseFloat(text.replace(/[^\d.]/g, '')));
+        return priceTexts.map((text) => parseFloat(text.replace(/[^\d.]/g, '')));
     }
 
     async hasProducts(): Promise<boolean> {
@@ -128,5 +128,27 @@ export default class CategoryPage extends BasePage {
         }
 
         await addToCartButton.click();
+    }
+
+    /* Sorting methods */
+    async sortBy(option: SortByOptions): Promise<void> {
+        await this.sortByDropDown.selectOption({ label: option });
+        await this.page.waitForLoadState();
+    }
+
+    async verifySortByName(order: 'asc' | 'desc'): Promise<boolean> {
+        const titles = await this.getProductTitles();
+        const sortedTitles = [...titles].sort((a, b) =>
+            order === 'asc' ? a.localeCompare(b) : b.localeCompare(a)
+        );
+
+        return JSON.stringify(titles) === JSON.stringify(sortedTitles);
+    }
+
+    async verifySortByPrice(order: 'asc' | 'desc'): Promise<boolean> {
+        const prices = await this.getProductPrices();
+        const sortedPrices = [...prices].sort((a, b) => (order === 'asc' ? a - b : b - a));
+
+        return JSON.stringify(prices) === JSON.stringify(sortedPrices);
     }
 }
