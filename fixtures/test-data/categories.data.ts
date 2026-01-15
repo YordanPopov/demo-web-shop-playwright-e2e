@@ -2,8 +2,8 @@ import type { CategoryInfo, SortTestCase } from '@types';
 
 export const ALL_CATEGORIES: CategoryInfo[] = [
     { name: 'Books', slug: 'books' },
-    { name: 'Computers', slug: 'computers', hasSubCategories: true },
-    { name: 'Electronics', slug: 'electronics', hasSubCategories: true },
+    //{ name: 'Computers', slug: 'computers', hasSubCategories: true },
+    //{ name: 'Electronics', slug: 'electronics', hasSubCategories: true },
     { name: 'Apparel & Shoes', slug: 'apparel-shoes' },
     { name: 'Digital downloads', slug: 'digital-downloads' },
     { name: 'Jewelry', slug: 'jewelry' },
