@@ -4,36 +4,36 @@ import { expect, Page } from '@playwright/test';
 import PageFactory from '@pages/Page.factory';
 
 /* Types */
-import { Category, SortByOptions } from '@types';
+import { CategorySlug, SortType, SortOrder, SortOptions } from '@types';
 
 export default class CategorySteps extends PageFactory {
     constructor(page: Page) {
         super(page);
     }
 
-    async navigateToCategory(category: Category): Promise<void> {
+    async navigateToCategory(category: CategorySlug): Promise<void> {
         await this.categoryPage.navigateToCategory(category);
     }
 
     async verifyProductsDisplayed(): Promise<void> {
         const hasProducts = await this.categoryPage.hasProducts();
-        expect(hasProducts).toBeTruthy();
+        expect.soft(hasProducts).toBeTruthy();
 
         const count = await this.categoryPage.getProductsCount();
-        expect(count).toBeGreaterThan(0);
+        expect.soft(count).toBeGreaterThan(0);
     }
 
-    async sortProducts(option: SortByOptions): Promise<void> {
+    async sortProducts(option: SortOptions): Promise<void> {
         await this.categoryPage.sortBy(option);
     }
 
-    async verifySorting(type: 'name' | 'price', order: 'asc' | 'desc'): Promise<void> {
+    async verifySorting(type: SortType, order: SortOrder): Promise<void> {
         if (type === 'name') {
             const isValid = await this.categoryPage.verifySortByName(order);
-            expect(isValid).toBeTruthy();
+            expect.soft(isValid).toBeTruthy();
         } else {
             const isValid = await this.categoryPage.verifySortByPrice(order);
-            expect(isValid).toBeTruthy();
+            expect.soft(isValid).toBeTruthy();
         }
     }
 }
