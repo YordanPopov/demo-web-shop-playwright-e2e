@@ -7,7 +7,7 @@ import BasePage from '@pages/Base.page';
 import { HeaderComponent, FooterComponent } from '@components';
 
 /* Types */
-import { Category, SortByOptions } from '@types';
+import { CategorySlug, SortOptions, SortOrder } from '@types';
 
 export default class CategoryPage extends BasePage {
     override readonly URL = 'https://demowebshop.tricentis.com/';
@@ -78,9 +78,10 @@ export default class CategoryPage extends BasePage {
     }
 
     /* Navigation methods */
-    async navigateToCategory(category: Category): Promise<void> {
-        await this.page.goto(`${this.URL}/${category}`);
-        await this.page.waitForLoadState('domcontentloaded');
+    async navigateToCategory(category: CategorySlug): Promise<void> {
+        await this.page.goto(`${this.URL}/${category}`, {
+            waitUntil: 'domcontentloaded',
+        });
     }
 
     /* Product methods */
@@ -131,21 +132,19 @@ export default class CategoryPage extends BasePage {
     }
 
     /* Sorting methods */
-    async sortBy(option: SortByOptions): Promise<void> {
+    async sortBy(option: SortOptions): Promise<void> {
         await this.sortByDropDown.selectOption({ label: option });
-        await this.page.waitForLoadState();
     }
 
-    async verifySortByName(order: 'asc' | 'desc'): Promise<boolean> {
+    async verifySortByName(order: SortOrder): Promise<boolean> {
         const titles = await this.getProductTitles();
         const sortedTitles = [...titles].sort((a, b) =>
             order === 'asc' ? a.localeCompare(b) : b.localeCompare(a)
         );
-
         return JSON.stringify(titles) === JSON.stringify(sortedTitles);
     }
 
-    async verifySortByPrice(order: 'asc' | 'desc'): Promise<boolean> {
+    async verifySortByPrice(order: SortOrder): Promise<boolean> {
         const prices = await this.getProductPrices();
         const sortedPrices = [...prices].sort((a, b) => (order === 'asc' ? a - b : b - a));
 
