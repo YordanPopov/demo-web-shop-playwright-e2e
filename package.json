@@ -8,7 +8,7 @@
         "test": "playwright test",
         "allure:generate": "allure generate ./allure-results --clean -o ./allure-report",
         "allure:open": "allure open ./allure-report",
-        "test:allure": "npm-run-all test allure:generate allure:open"
+        "test:allure": "npm-run-all --continue-on-error test allure:generate allure:open"
     },
     "keywords": [],
     "author": "Yordan Popov",
