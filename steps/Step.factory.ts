@@ -5,6 +5,7 @@ import LogInSteps from '@steps/LogIn.steps';
 import SignUpSteps from '@steps/SignUp.steps';
 import SearchSteps from '@steps/Search.steps';
 import CategorySteps from '@steps/Category.steps';
+import WishlistSteps from '@steps/Wishlist.steps';
 
 type FrameworkFixtures = {
     sharedSteps: SharedSteps;
@@ -16,6 +17,8 @@ type FrameworkFixtures = {
     searchSteps: SearchSteps;
 
     categorySteps: CategorySteps;
+
+    wishlistSteps: WishlistSteps;
 };
 
 export const test = base.extend<FrameworkFixtures>({
@@ -37,5 +40,9 @@ export const test = base.extend<FrameworkFixtures>({
 
     categorySteps: async ({ page }, use) => {
         await use(new CategorySteps(page));
+    },
+
+    wishlistSteps: async ({ page }, use) => {
+        await use(new WishlistSteps(page));
     },
 });
