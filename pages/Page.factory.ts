@@ -6,6 +6,7 @@ import SignUpPage from '@pages/SignUp.page';
 import LogInPage from '@pages/LogIn.page';
 import SearchResultsPage from '@pages/SearchResults.page';
 import CategoryPage from '@pages/Category.page';
+import WishlistPage from '@pages/Wishlist.page';
 
 export default class PageFactory {
     readonly homePage: HomePage;
@@ -13,6 +14,7 @@ export default class PageFactory {
     readonly logInPage: LogInPage;
     readonly searchResultsPage: SearchResultsPage;
     readonly categoryPage: CategoryPage;
+    readonly wishlistPage: WishlistPage;
 
     constructor(protected page: Page) {
         this.homePage = new HomePage(page);
@@ -20,5 +22,6 @@ export default class PageFactory {
         this.logInPage = new LogInPage(page);
         this.searchResultsPage = new SearchResultsPage(page);
         this.categoryPage = new CategoryPage(page);
+        this.wishlistPage = new WishlistPage(page);
     }
 }
