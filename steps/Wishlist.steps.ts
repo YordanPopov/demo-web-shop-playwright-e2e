@@ -37,5 +37,42 @@ export default class WishlistSteps extends PageFactory {
         expect(isInWishlist).toBeFalsy();
     }
 
-    
+    async removeProductFromWishlist(productTitle: string): Promise<void> {
+        await this.wishlistPage.removeProductByTitle(productTitle);
+    }
+
+    async removeProductByIndex(index: number): Promise<void> {
+        await this.wishlistPage.removeProduct(index);
+    }
+
+    async clearWishlist(): Promise<void> {
+        await this.wishlistPage.removeAllProducts();
+    }
+
+    async updateProductQuantity(productTitle: string, qty: number): Promise<void> {
+        await this.wishlistPage.updateQuantityByTitle(productTitle, qty);
+    }
+
+    async verifyProductQuantity(productIndex: number, expectedQty: number): Promise<void> {
+        const actualQty = await this.wishlistPage.getProductQuantity(productIndex);
+        expect(actualQty).toBe(expectedQty);
+    }
+
+    async addProductToCart(productIndex: number): Promise<void> {
+        await this.wishlistPage.addProductToCart(productIndex);
+    }
+
+    async addAllProductToCart(): Promise<void> {
+        await this.wishlistPage.addAllToCart();
+    }
+
+    async verifyProductPrice(productIndex: number, expectedPrice: number): Promise<void> {
+        const actualPrice = await this.wishlistPage.getProductPrice(productIndex);
+        expect(actualPrice).toBe(expectedPrice);
+    }
+
+    async verifySubtotal(productIndex: number, expectedSubtotal: number): Promise<void> {
+        const actualSubtotal = await this.wishlistPage.getProductSubtotal(productIndex);
+        await expect(actualSubtotal).toBe(expectedSubtotal);
+    }
 }
