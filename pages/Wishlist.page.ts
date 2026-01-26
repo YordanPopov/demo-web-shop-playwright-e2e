@@ -61,6 +61,10 @@ export default class WishlistPage extends BasePage {
         this.emailFriendButton = page.locator(' input.email-a-friend-wishlist-button');
     }
 
+    /* Navigation methods */
+    async openWishlist(): Promise<void> {
+        await this.header.openWishlist();
+    }
     /* Product verification methods */
     async getItemsCount(): Promise<number> {
         return await this.wishlistItems.count();
@@ -130,7 +134,7 @@ export default class WishlistPage extends BasePage {
     async removeAllProducts(): Promise<void> {
         const productsCount = await this.removeCheckboxes.count();
 
-        for (let i = 0; i <= productsCount; i++) {
+        for (let i = 0; i < productsCount; i++) {
             await this.removeCheckboxes.nth(i).check();
         }
 
