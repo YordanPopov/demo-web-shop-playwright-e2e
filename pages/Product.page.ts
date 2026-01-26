@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, errors } from '@playwright/test';
 
 /* Page objects */
 import BasePage from '@pages/Base.page';
@@ -108,6 +108,49 @@ export default class ProductPage extends BasePage {
             return true;
         } catch {
             return false;
+        }
+    }
+
+    /* Add to cart methods */
+    async setQuantity(qty: number): Promise<void> {
+        await this.quantityInput.fill(String(qty));
+    }
+
+    async getQuantity(): Promise<number> {
+        const qty = await this.quantityInput.inputValue();
+        return parseInt(qty);
+    }
+
+    async isAddToCartAvailable(): Promise<boolean> {
+        return await this.addToCartButton.isVisible();
+    }
+
+    async addToCart(qty: number = 1): Promise<void> {
+        try {
+            if (await this.isAddToCartAvailable()) {
+                if (qty !== 1 && qty > 1) {
+                    await this.setQuantity(qty);
+                }
+
+                await this.addToCartButton.click();
+                await this.page.waitForLoadState('domcontentloaded');
+            }
+        } catch {
+            throw new Error(`Product is not available!`);
+        }
+    }
+
+    async isAddToWishlistAvailable(): Promise<boolean> {
+        return this.addToWishlistButton.isVisible();
+    }
+
+    async addToWishlist(): Promise<void> {
+        try {
+            if (await this.isAddToWishlistAvailable) {
+                await this.addToWishlistButton.click();
+            }
+        } catch {
+            throw new Error(`This product couldn't be added to your wishlist!`);
         }
     }
 }
