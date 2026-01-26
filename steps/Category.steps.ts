@@ -36,4 +36,14 @@ export default class CategorySteps extends PageFactory {
             expect.soft(isValid).toBeTruthy();
         }
     }
+
+    async openProductByTitle(productTitle: string): Promise<void> {
+        await this.verifyProductsDisplayed();
+        await this.categoryPage.clickProductByTitle(productTitle);
+    }
+
+    async openProductByIndex(productIndex: number): Promise<void> {
+        await this.verifyProductsDisplayed();
+        await this.categoryPage.clickProduct(productIndex);
+    }
 }
