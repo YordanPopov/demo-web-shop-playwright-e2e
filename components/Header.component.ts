@@ -55,7 +55,7 @@ export class HeaderComponent {
         /* cart & WishList */
         this.cartLink = page.getByRole('link', { name: /Shopping cart/ });
         this.cartBadge = page.locator('.cart-qty');
-        this.wishListLink = page.getByRole('link', { name: /Wishlist/ });
+        this.wishListLink = page.getByRole('link', { name: /Wishlist/ }).first();
         this.wishListBadge = page.locator('.wishlist-qty');
 
         /* Search */
