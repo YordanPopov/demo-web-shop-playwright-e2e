@@ -107,7 +107,11 @@ export default class CategoryPage extends BasePage {
     }
 
     async clickProductByTitle(title: string): Promise<void> {
-        await this.productCard.filter({ hasText: title }).first().click();
+        await this.productCard
+            .filter({ hasText: title })
+            .locator('.product-title a')
+            .first()
+            .click();
     }
 
     async addProductToCart(index: number): Promise<void> {
