@@ -8,8 +8,8 @@ export default class WishlistSteps extends PageFactory {
         super(page);
     }
 
-    async navigateToWishlist(): Promise<void> {
-        await this.wishlistPage.navigate();
+    async openWishlist(): Promise<void> {
+        await this.wishlistPage.openWishlist();
     }
 
     async verifyWishlistHasItems(): Promise<void> {
