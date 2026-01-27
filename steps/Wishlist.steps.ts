@@ -71,8 +71,8 @@ export default class WishlistSteps extends PageFactory {
         expect(actualPrice).toBe(expectedPrice);
     }
 
-    async verifySubtotal(productIndex: number, expectedSubtotal: number): Promise<void> {
-        const actualSubtotal = await this.wishlistPage.getProductSubtotal(productIndex);
-        await expect(actualSubtotal).toBe(expectedSubtotal);
+    async verifySubtotal(producTitle: string, expectedSubtotal: number): Promise<void> {
+        const actualSubtotal = await this.wishlistPage.getProductSubtotal(producTitle);
+        expect(actualSubtotal).toBe(expectedSubtotal);
     }
 }
