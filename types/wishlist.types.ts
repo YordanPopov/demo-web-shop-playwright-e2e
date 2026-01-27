@@ -1,3 +1,5 @@
+import { CategorySlug } from './categories.types';
+
 export interface WishlistProduct {
     title: string;
     expectedPrice?: number;
@@ -6,14 +8,19 @@ export interface WishlistProduct {
 
 export interface AddToWishlistCase {
     description: string;
-    productUrl: string;
+    category: CategorySlug;
     productTitle: string;
+    productIndex?: number;
+    navigateBy: 'Title' | 'Index';
 }
 
-export interface QuantityUpdateCase {
+export interface UpdateQuantityCase {
     description: string;
+    category: CategorySlug;
     productTitle: string;
+    initialQty: number;
     newQuantity: number;
+    expectedPrice: number;
     expectedSubtotal?: number;
 }
 
