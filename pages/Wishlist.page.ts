@@ -103,8 +103,12 @@ export default class WishlistPage extends BasePage {
         return parseInt(value || '1');
     }
 
-    async getProductSubtotal(index: number): Promise<number> {
-        const textSubtotal = await this.subTotal.nth(index).textContent();
+    async getProductSubtotal(productTitle: string): Promise<number> {
+        const row = this.page.locator('.cart-item-row', {
+            has: this.page.locator('.product', { hasText: productTitle }),
+        });
+
+        const textSubtotal = await row.locator('.product-subtotal').textContent();
         return parseFloat(textSubtotal?.replace(/[^\d.]/g, '') || '0');
     }
 
