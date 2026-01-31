@@ -32,8 +32,8 @@ export default class ProductSteps extends PageFactory {
         expect(isInStock).toBeTruthy();
     }
 
-    async addProductToCart(): Promise<void> {
-        await this.productPage.addToCart();
+    async addProductToCart(qty: number): Promise<void> {
+        await this.productPage.addToCart(qty);
     }
 
     async addProductToWishlist(): Promise<void> {
