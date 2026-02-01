@@ -144,6 +144,17 @@ export default class CartPage extends BasePage {
         return parseFloat(priceText.replace(/[^\d.]/g, '') || '0');
     }
 
+    async getProductPriceByTitle(productTitle: string): Promise<number> {
+        const productTitles = await this.getProductTitles();
+        const productIndex = productTitles.findIndex((title) => title.includes(productTitle));
+
+        if (productIndex === -1) {
+            throw new Error(`Product with title '${productTitle}' not found in cart.`);
+        }
+
+        return await this.getProductPrice(productIndex);
+    }
+
     async getProductQuantity(productIndex: number = 0): Promise<number> {
         const productQtyText = await this.productQtyInput.nth(productIndex).inputValue();
         return parseInt(productQtyText || '1');
@@ -216,14 +227,15 @@ export default class CartPage extends BasePage {
             throw new Error(`Product with title '${productTitle}' not found in cart.`);
         }
 
-        await this.removeProduct(productIndex);
+        await this.updateCartButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
     }
 
     async removeAllProducts(): Promise<void> {
         const count = await this.productRemoveCheckbox.count();
 
         for (let index = 0; index < count; index++) {
-            await this.productRemoveCheckbox.check();
+            await this.productRemoveCheckbox.nth(index).check();
         }
 
         await this.updateCartButton.click();
