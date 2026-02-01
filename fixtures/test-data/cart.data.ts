@@ -1,4 +1,9 @@
-import { LogInData, AddToCartTestCase } from '@types';
+import {
+    LogInData,
+    AddToCartTestCase,
+    UpdateCartQuantityTestCase,
+    CartTotalTestCase,
+} from '@types';
 
 export const CART_USER: LogInData = {
     email: 'tester_yo@email.com',
@@ -54,5 +59,76 @@ export const ADD_TO_CART_CASES: AddToCartTestCase[] = [
         productTitle: 'Black & White Diamond Heart',
         quantity: 10_000,
         expectedPrice: 1_300_000.0,
+    },
+];
+
+export const UPDATE_CART_QUANTITY_CASES: UpdateCartQuantityTestCase[] = [
+    {
+        description: 'Update quantity from 1 to 5',
+        category: 'books',
+        productTitle: 'Computing and Internet',
+        initialQuantity: 1,
+        newQuantity: 5,
+        expectedPrice: 10.0,
+        expectedSubtotal: 50.0,
+    },
+    {
+        description: 'Update quantity from 10 to 50',
+        category: 'books',
+        productTitle: 'Fiction',
+        initialQuantity: 10,
+        newQuantity: 50,
+        expectedPrice: 24.0,
+        expectedSubtotal: 1200,
+    },
+    {
+        description: 'Decrease quantity from 10 to 1',
+        category: 'books',
+        productTitle: 'Health Book',
+        initialQuantity: 10,
+        newQuantity: 1,
+        expectedPrice: 10.0,
+        expectedSubtotal: 10.0,
+    },
+];
+
+export const CART_TOTAL_CASES: CartTotalTestCase[] = [
+    {
+        description: 'Verify total with single product',
+        products: [
+            {
+                category: 'books',
+                productTitle: 'Computing and Internet',
+                quantity: 5,
+                expectedPrice: 10.0,
+            },
+        ],
+        expectedSubtotal: 50.0,
+        expectedTotal: 50.0,
+    },
+    {
+        description: 'Verify total with multiple products',
+        products: [
+            {
+                category: 'books',
+                productTitle: 'Computing and Internet',
+                quantity: 3,
+                expectedPrice: 10.0,
+            },
+            {
+                category: 'notebooks',
+                productTitle: '14.1-inch Laptop',
+                quantity: 2,
+                expectedPrice: 1590.0,
+            },
+            {
+                category: 'digital-downloads',
+                productTitle: '3rd Album',
+                quantity: 1000,
+                expectedPrice: 1.0,
+            },
+        ],
+        expectedSubtotal: 4210.0,
+        expectedTotal: 4210.0,
     },
 ];
