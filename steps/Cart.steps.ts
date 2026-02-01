@@ -14,27 +14,27 @@ export default class CartSteps extends PageFactory {
 
     async verifyCartHasItems(): Promise<void> {
         const hasItems = await this.cartPage.hasItems();
-        expect(hasItems).toBeTruthy();
+        expect.soft(hasItems).toBeTruthy();
     }
 
     async verifyCartIsEmpty(): Promise<void> {
         const isEmpty = await this.cartPage.isCartEmpty();
-        expect(isEmpty).toBeTruthy();
+        expect.soft(isEmpty).toBeTruthy();
     }
 
     async verifyProductInCart(productTitle: string): Promise<void> {
         const isInCart = await this.cartPage.isProductInCart(productTitle);
-        expect(isInCart).toBeTruthy();
+        expect.soft(isInCart).toBeTruthy();
     }
 
     async verifyCartItemsCount(expectedCount: number): Promise<void> {
         const actCount = await this.cartPage.getCartItemsCount();
-        expect(actCount).toBe(expectedCount);
+        expect.soft(actCount).toBe(expectedCount);
     }
 
     async verifyCartBadgeCount(expectedCount: number): Promise<void> {
         const actCount = await this.cartPage.getCartBadgeCount();
-        expect(actCount).toBe(expectedCount);
+        expect.soft(actCount).toBe(expectedCount);
     }
 
     async updateProductQuantity(productTitle: string, newQuantity: number): Promise<void> {
@@ -50,7 +50,7 @@ export default class CartSteps extends PageFactory {
         }
 
         const actualQty = await this.cartPage.getProductQuantity(productIndex);
-        expect(actualQty).toBe(expectedQty);
+        expect.soft(actualQty).toBe(expectedQty);
     }
 
     async verifyProductSubtotal(productTitle: string, expectedSubtotal: number): Promise<void> {
@@ -62,17 +62,22 @@ export default class CartSteps extends PageFactory {
         }
 
         const actualSubtotal = await this.cartPage.getProductSubtotal(productIndex);
-        expect(actualSubtotal).toBe(expectedSubtotal);
+        expect.soft(actualSubtotal).toBe(expectedSubtotal);
+    }
+
+    async verifyProductPrice(productTitle: string, expectedPrice: number): Promise<void> {
+        const actualPrice = await this.cartPage.getProductPriceByTitle(productTitle);
+        expect.soft(actualPrice).toBe(expectedPrice);
     }
 
     async verifySubtotal(expectedSubtotal: string): Promise<void> {
         const actualSubtotal = await this.cartPage.getSubtotal();
-        expect(actualSubtotal).toBe(expectedSubtotal);
+        expect.soft(actualSubtotal).toBe(expectedSubtotal);
     }
 
     async verifyTotal(expectedTotal: string): Promise<void> {
         const actualTotal = await this.cartPage.getTotal();
-        expect(actualTotal).toBe(expectedTotal);
+        expect.soft(actualTotal).toBe(expectedTotal);
     }
 
     async removeProduct(productTitle: string): Promise<void> {
@@ -93,7 +98,7 @@ export default class CartSteps extends PageFactory {
 
     async verifyCartSummary(expected: { subtotal: number; total: number }): Promise<void> {
         const summary = await this.cartPage.verifyCartSummary();
-        expect(summary.subtotal).toBe(expected.subtotal);
-        expect(summary.total).toBe(expected.total);
+        expect.soft(summary.subtotal).toBe(expected.subtotal);
+        expect.soft(summary.total).toBe(expected.total);
     }
 }
