@@ -56,7 +56,7 @@ export default class CheckoutPage extends BasePage {
 
     /* Step 3: Shipping method  */
     private readonly shippingMethodSection: Locator;
-    private readonly shippingmethodRadios: Locator;
+    private readonly shippingMethodRadios: Locator;
     private readonly shippingMethodBackButton: Locator;
     private readonly shippingMethodContinueButton: Locator;
 
@@ -153,7 +153,7 @@ export default class CheckoutPage extends BasePage {
 
         /* Step 3: Shipping method  */
         this.shippingMethodSection = page.locator('#checkout-step-shipping-method');
-        this.shippingmethodRadios = page.locator('.shipping-method input[type="radio"]');
+        this.shippingMethodRadios = page.locator('.shipping-method input[type="radio"]');
         this.shippingMethodBackButton = page.locator('#shipping-method-buttons-container p a');
         this.shippingMethodContinueButton = page.locator(
             '#shipping-method-buttons-container input[type="button"]'
@@ -204,5 +204,178 @@ export default class CheckoutPage extends BasePage {
         this.paymentFeeValue = page.locator('.cart-total .product-price').nth(2);
         this.taxValue = page.locator('.cart-total .product-price').nth(3);
         this.orderTotalValue = page.locator('.cart-total .product-price strong');
+    }
+
+    /* Step 1: Billing address methods */
+
+    async selectExistingBillingAddress(addressText: string): Promise<void> {
+        await this.billingAddressSelect.selectOption({ label: addressText });
+    }
+
+    async fillNewBillingAddress(address: {
+        fisrtName: string;
+        lastName: string;
+        email: string;
+        company?: string;
+        country: string;
+        state?: string;
+        city: string;
+        address1: string;
+        address2?: string;
+        postalCode: string;
+        phoneNumber: string;
+        fax?: string;
+    }): Promise<void> {
+        await this.billingFirstName.fill(address.fisrtName);
+        await this.billingLastName.fill(address.lastName);
+        await this.billingEmail.fill(address.email);
+
+        if (address.company) {
+            this.billingCompany.fill(address.company);
+        }
+
+        await this.billingCountry.selectOption({ label: address.country });
+
+        if (address.state) {
+            await this.billingState.selectOption({ label: address.state });
+        }
+
+        await this.billingCity.fill(address.city);
+        await this.billingAddress1.fill(address.address1);
+
+        if (address.address2) {
+            await this.billingAddress2.fill(address.address2);
+        }
+
+        await this.billingPostalCode.fill(address.postalCode);
+        await this.billingPhoneNumber.fill(address.phoneNumber);
+
+        if (address.fax) {
+            await this.billingFaxNumber.fill(address.fax);
+        }
+    }
+
+    async continueToShippingAddress(): Promise<void> {
+        await this.billingContinueButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    /* Step 2: Shipping address methods */
+    async selectExistingShippingAddress(addressText: string): Promise<void> {
+        await this.shippingAddressSelect.selectOption({ label: addressText });
+    }
+
+    async fillNewShippingAddress(address: {
+        fisrtName: string;
+        lastName: string;
+        email: string;
+        company?: string;
+        country: string;
+        state?: string;
+        city: string;
+        address1: string;
+        address2?: string;
+        postalCode: string;
+        phoneNumber: string;
+        fax?: string;
+    }): Promise<void> {
+        await this.shippingFirstName.fill(address.fisrtName);
+        await this.shippingLastName.fill(address.lastName);
+        await this.shippingEmail.fill(address.email);
+
+        if (address.company) {
+            this.shippingCompany.fill(address.company);
+        }
+
+        await this.shippingCountry.selectOption({ label: address.country });
+
+        if (address.state) {
+            await this.shippingState.selectOption({ label: address.state });
+        }
+
+        await this.shippingCity.fill(address.city);
+        await this.shippingAddress1.fill(address.address1);
+
+        if (address.address2) {
+            await this.shippingAddress2.fill(address.address2);
+        }
+
+        await this.shippingPostalCode.fill(address.postalCode);
+        await this.shippingPhoneNumber.fill(address.phoneNumber);
+
+        if (address.fax) {
+            await this.shippingFaxNumber.fill(address.fax);
+        }
+    }
+
+    async selectPickUpInStore(): Promise<void> {
+        await this.pickupInStoreCheckbox.check();
+    }
+
+    async continueToShippingMethod(): Promise<void> {
+        await this.shippingContinueButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    async backToBillingAddress(): Promise<void> {
+        await this.shippingBackButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    /* Step 3: Shipping method actions*/
+    async selectShippingMethod(methodName: string): Promise<void> {
+        await this.shippingMethodRadios.filter({ hasText: methodName }).check();
+    }
+
+    async continueToPaymentMethod(): Promise<void> {
+        await this.shippingMethodContinueButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    async backToShippingAddress(): Promise<void> {
+        await this.shippingMethodBackButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    /* Step 4: Payment method actions */
+    async selectPaymentMethod(methodName: string): Promise<void> {
+        await this.paymentMethodRadios.filter({ hasText: methodName }).check();
+    }
+
+    async continueToPaymentInformation(): Promise<void> {
+        await this.paymentMethodContinueButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    async backToShippingMethod(): Promise<void> {
+        await this.paymentMethodBackButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    /* Step 5: Payment information methods */
+    async getPaymentInformation(): Promise<string> {
+        const paymentInfo = (await this.paymentInfoText.textContent())?.trim();
+        return paymentInfo || '';
+    }
+
+    async continueToConfirmOrder(): Promise<void> {
+        await this.paymentInfoContinueButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    async backToPaymentMethod(): Promise<void> {
+        await this.paymentInfoBackButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    /* Step 6: Confirm order methods */
+    async confirmOrder(): Promise<void> {
+        await this.confirmOrderButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    async backToPaymentInfo(): Promise<void> {
+        await this.confirmOrderBackButton.click();
+        await this.page.waitForLoadState('domcontentloaded');
     }
 }
