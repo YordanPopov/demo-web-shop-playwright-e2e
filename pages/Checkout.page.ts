@@ -378,4 +378,67 @@ export default class CheckoutPage extends BasePage {
         await this.confirmOrderBackButton.click();
         await this.page.waitForLoadState('domcontentloaded');
     }
+
+    /* Order summary method */
+    async getOrderSubtotal(): Promise<number> {
+        const subtotalText = await this.subTotalValue.textContent();
+        return parseFloat(subtotalText.replace(/[^\d.]/g, '') || '0');
+    }
+
+    async getOrderShippingCost(): Promise<number> {
+        const shippingCostText = await this.shippingCostValue.textContent();
+        return parseFloat(shippingCostText.replace(/[^\d.]/g, '') || '0');
+    }
+
+    async getOrderPaymenFee(): Promise<number> {
+        const paymentFeeText = await this.paymentFeeValue.textContent();
+        return parseFloat(paymentFeeText.replace(/[^\d.]/g, '') || '0');
+    }
+
+    async getOrderTax(): Promise<number> {
+        const orderTaxText = await this.taxValue.textContent();
+        return parseFloat(orderTaxText.replace(/[^\d.]/g, '') || '0');
+    }
+
+    async getOrderTotal(): Promise<number> {
+        const orderTotalText = await this.orderTotalValue.textContent();
+        return parseFloat(orderTotalText.replace(/[^\d.]/g, '') || '0');
+    }
+
+    /* Billing & Shipping info dispaly methods*/
+    async getBillingDisplayInfo(): Promise<{
+        name: string;
+        email: string;
+        phone: string;
+        address: string;
+        country: string;
+        paymentMethod: string;
+    }> {
+        return {
+            name: (await this.billingInfoName.textContent())?.trim() || '',
+            email: (await this.billingInfoEmail.textContent())?.replace('Email:', '').trim() || '',
+            phone: (await this.billingInfoPhone.textContent())?.replace('Phone:', '').trim() || '',
+            address: (await this.billingInfoAddress.textContent())?.trim() || '',
+            country: (await this.billingInfoCountry.textContent())?.trim() || '',
+            paymentMethod: (await this.billingPaymentMethod.textContent())?.trim() || '',
+        };
+    }
+
+    async getShippingDisplayInfo(): Promise<{
+        name: string;
+        email: string;
+        phone: string;
+        address: string;
+        country: string;
+        shippingMethod: string;
+    }> {
+        return {
+            name: (await this.shippingInfoName.textContent())?.trim() || '',
+            email: (await this.shippingInfoEmail.textContent())?.replace('Email:', '').trim() || '',
+            phone: (await this.shippingInfoPhone.textContent())?.replace('Phone:', '').trim() || '',
+            address: (await this.shippingInfoAddress.textContent())?.trim() || '',
+            country: (await this.shippingInfoCountry.textContent())?.trim() || '',
+            shippingMethod: (await this.shippingMethodDisplay.textContent())?.trim() || '',
+        };
+    }
 }
