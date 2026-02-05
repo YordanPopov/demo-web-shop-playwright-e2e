@@ -6,6 +6,9 @@ import BasePage from '@pages/Base.page';
 /* Components */
 import { HeaderComponent, FooterComponent } from '@components';
 
+/* Types */
+import { Address, ShippingMethod, PaymentMethod } from '@types';
+
 export default class CheckoutPage extends BasePage {
     override readonly URL = 'https://demowebshop.tricentis.com/onepagecheckout';
     override readonly TITLE = 'Demo Web Shop. Checkout';
@@ -212,46 +215,33 @@ export default class CheckoutPage extends BasePage {
         await this.billingAddressSelect.selectOption({ label: addressText });
     }
 
-    async fillNewBillingAddress(address: {
-        fisrtName: string;
-        lastName: string;
-        email: string;
-        company?: string;
-        country: string;
-        state?: string;
-        city: string;
-        address1: string;
-        address2?: string;
-        postalCode: string;
-        phoneNumber: string;
-        fax?: string;
-    }): Promise<void> {
-        await this.billingFirstName.fill(address.fisrtName);
-        await this.billingLastName.fill(address.lastName);
-        await this.billingEmail.fill(address.email);
+    async fillNewBillingAddress(billingAddress: Address): Promise<void> {
+        await this.billingFirstName.fill(billingAddress.fisrtName);
+        await this.billingLastName.fill(billingAddress.lastName);
+        await this.billingEmail.fill(billingAddress.email);
 
-        if (address.company) {
-            this.billingCompany.fill(address.company);
+        if (billingAddress.company) {
+            this.billingCompany.fill(billingAddress.company);
         }
 
-        await this.billingCountry.selectOption({ label: address.country });
+        await this.billingCountry.selectOption({ label: billingAddress.country });
 
-        if (address.state) {
-            await this.billingState.selectOption({ label: address.state });
+        if (billingAddress.state) {
+            await this.billingState.selectOption({ label: billingAddress.state });
         }
 
-        await this.billingCity.fill(address.city);
-        await this.billingAddress1.fill(address.address1);
+        await this.billingCity.fill(billingAddress.city);
+        await this.billingAddress1.fill(billingAddress.address1);
 
-        if (address.address2) {
-            await this.billingAddress2.fill(address.address2);
+        if (billingAddress.address2) {
+            await this.billingAddress2.fill(billingAddress.address2);
         }
 
-        await this.billingPostalCode.fill(address.postalCode);
-        await this.billingPhoneNumber.fill(address.phoneNumber);
+        await this.billingPostalCode.fill(billingAddress.postalCode);
+        await this.billingPhoneNumber.fill(billingAddress.phoneNumber);
 
-        if (address.fax) {
-            await this.billingFaxNumber.fill(address.fax);
+        if (billingAddress.fax) {
+            await this.billingFaxNumber.fill(billingAddress.fax);
         }
     }
 
@@ -265,46 +255,33 @@ export default class CheckoutPage extends BasePage {
         await this.shippingAddressSelect.selectOption({ label: addressText });
     }
 
-    async fillNewShippingAddress(address: {
-        fisrtName: string;
-        lastName: string;
-        email: string;
-        company?: string;
-        country: string;
-        state?: string;
-        city: string;
-        address1: string;
-        address2?: string;
-        postalCode: string;
-        phoneNumber: string;
-        fax?: string;
-    }): Promise<void> {
-        await this.shippingFirstName.fill(address.fisrtName);
-        await this.shippingLastName.fill(address.lastName);
-        await this.shippingEmail.fill(address.email);
+    async fillNewShippingAddress(shippingAddress: Address): Promise<void> {
+        await this.shippingFirstName.fill(shippingAddress.fisrtName);
+        await this.shippingLastName.fill(shippingAddress.lastName);
+        await this.shippingEmail.fill(shippingAddress.email);
 
-        if (address.company) {
-            this.shippingCompany.fill(address.company);
+        if (shippingAddress.company) {
+            this.shippingCompany.fill(shippingAddress.company);
         }
 
-        await this.shippingCountry.selectOption({ label: address.country });
+        await this.shippingCountry.selectOption({ label: shippingAddress.country });
 
-        if (address.state) {
-            await this.shippingState.selectOption({ label: address.state });
+        if (shippingAddress.state) {
+            await this.shippingState.selectOption({ label: shippingAddress.state });
         }
 
-        await this.shippingCity.fill(address.city);
-        await this.shippingAddress1.fill(address.address1);
+        await this.shippingCity.fill(shippingAddress.city);
+        await this.shippingAddress1.fill(shippingAddress.address1);
 
-        if (address.address2) {
-            await this.shippingAddress2.fill(address.address2);
+        if (shippingAddress.address2) {
+            await this.shippingAddress2.fill(shippingAddress.address2);
         }
 
-        await this.shippingPostalCode.fill(address.postalCode);
-        await this.shippingPhoneNumber.fill(address.phoneNumber);
+        await this.shippingPostalCode.fill(shippingAddress.postalCode);
+        await this.shippingPhoneNumber.fill(shippingAddress.phoneNumber);
 
-        if (address.fax) {
-            await this.shippingFaxNumber.fill(address.fax);
+        if (shippingAddress.fax) {
+            await this.shippingFaxNumber.fill(shippingAddress.fax);
         }
     }
 
@@ -323,7 +300,7 @@ export default class CheckoutPage extends BasePage {
     }
 
     /* Step 3: Shipping method actions*/
-    async selectShippingMethod(methodName: string): Promise<void> {
+    async selectShippingMethod(methodName: ShippingMethod): Promise<void> {
         await this.shippingMethodRadios.filter({ hasText: methodName }).check();
     }
 
@@ -338,7 +315,7 @@ export default class CheckoutPage extends BasePage {
     }
 
     /* Step 4: Payment method actions */
-    async selectPaymentMethod(methodName: string): Promise<void> {
+    async selectPaymentMethod(methodName: PaymentMethod): Promise<void> {
         await this.paymentMethodRadios.filter({ hasText: methodName }).check();
     }
 
@@ -440,5 +417,48 @@ export default class CheckoutPage extends BasePage {
             country: (await this.shippingInfoCountry.textContent())?.trim() || '',
             shippingMethod: (await this.shippingMethodDisplay.textContent())?.trim() || '',
         };
+    }
+
+    /* Complete checkoutflow */
+    async completeCheckoutWithExistingAddresses(
+        shippingMethod: ShippingMethod,
+        paymentMethod: PaymentMethod
+    ): Promise<void> {
+        await this.continueToShippingAddress();
+
+        await this.continueToShippingMethod();
+
+        await this.selectShippingMethod(shippingMethod);
+        await this.continueToPaymentMethod();
+
+        await this.selectPaymentMethod(paymentMethod);
+        await this.continueToPaymentInformation();
+
+        await this.continueToConfirmOrder();
+
+        await this.confirmOrder();
+    }
+
+    async completeCheckoutWithNewAddresses(
+        billingAddress: Address,
+        shippingAddress: Address,
+        shippingMethod: ShippingMethod,
+        paymentMethod: PaymentMethod
+    ): Promise<void> {
+        await this.fillNewBillingAddress(billingAddress);
+        await this.continueToShippingAddress();
+
+        await this.fillNewShippingAddress(shippingAddress);
+        await this.continueToShippingMethod();
+
+        await this.selectShippingMethod(shippingMethod);
+        await this.continueToPaymentMethod();
+
+        await this.selectPaymentMethod(paymentMethod);
+        await this.continueToPaymentInformation();
+
+        await this.continueToConfirmOrder();
+
+        await this.confirmOrder();
     }
 }
