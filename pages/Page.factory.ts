@@ -9,6 +9,7 @@ import CategoryPage from '@pages/Category.page';
 import WishlistPage from '@pages/Wishlist.page';
 import ProductPage from '@pages/Product.page';
 import CartPage from '@pages/Cart.page';
+import CheckoutPage from '@pages/Checkout.page';
 
 export default class PageFactory {
     readonly homePage: HomePage;
@@ -19,6 +20,7 @@ export default class PageFactory {
     readonly wishlistPage: WishlistPage;
     readonly productPage: ProductPage;
     readonly cartPage: CartPage;
+    readonly checkoutPage: CheckoutPage;
 
     constructor(protected page: Page) {
         this.homePage = new HomePage(page);
@@ -29,5 +31,6 @@ export default class PageFactory {
         this.wishlistPage = new WishlistPage(page);
         this.productPage = new ProductPage(page);
         this.cartPage = new CartPage(page);
+        this.checkoutPage = new CheckoutPage(page);
     }
 }
