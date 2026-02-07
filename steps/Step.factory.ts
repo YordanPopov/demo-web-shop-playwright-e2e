@@ -8,6 +8,7 @@ import CategorySteps from '@steps/Category.steps';
 import WishlistSteps from '@steps/Wishlist.steps';
 import ProductSteps from '@steps/Product.steps';
 import CartSteps from '@steps/Cart.steps';
+import CheckoutSteps from '@steps/Checkout.steps';
 
 type FrameworkFixtures = {
     sharedSteps: SharedSteps;
@@ -25,6 +26,8 @@ type FrameworkFixtures = {
     productSteps: ProductSteps;
 
     cartSteps: CartSteps;
+
+    checkoutSteps: CheckoutSteps;
 };
 
 export const test = base.extend<FrameworkFixtures>({
@@ -58,5 +61,9 @@ export const test = base.extend<FrameworkFixtures>({
 
     cartSteps: async ({ page }, use) => {
         await use(new CartSteps(page));
+    },
+
+    checkoutSteps: async ({ page }, use) => {
+        await use(new CheckoutSteps(page));
     },
 });
