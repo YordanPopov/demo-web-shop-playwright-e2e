@@ -461,4 +461,33 @@ export default class CheckoutPage extends BasePage {
 
         await this.confirmOrder();
     }
+
+    /* Validation methods */
+    async isStepVisible(stepNumber: number): Promise<boolean> {
+        const stepIDs = [
+            '#opc-billing',
+            '#opc-shipping',
+            '#opc-shipping_method',
+            '#opc-payment_method',
+            '#opc-payment_info',
+            '#opc-confirm_order',
+        ];
+
+        if (stepNumber < 1 || stepNumber > 6) {
+            throw new Error('Step must be between 1 and 6');
+        }
+
+        const step = this.page.locator(stepIDs[stepNumber - 1]);
+        return await step.locator('.step').isVisible();
+    }
+
+    async getCurrentStep(): Promise<number> {
+        for (let i = 1; i <= 6; i++) {
+            if (await this.isStepVisible(i)) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
 }
