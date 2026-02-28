@@ -367,7 +367,7 @@ export default class CheckoutPage extends BasePage {
         return parseFloat(shippingCostText.replace(/[^\d.]/g, '') || '0');
     }
 
-    async getOrderPaymenFee(): Promise<number> {
+    async getOrderPaymentFee(): Promise<number> {
         const paymentFeeText = await this.paymentFeeValue.textContent();
         return parseFloat(paymentFeeText.replace(/[^\d.]/g, '') || '0');
     }
@@ -380,6 +380,22 @@ export default class CheckoutPage extends BasePage {
     async getOrderTotal(): Promise<number> {
         const orderTotalText = await this.orderTotalValue.textContent();
         return parseFloat(orderTotalText.replace(/[^\d.]/g, '') || '0');
+    }
+
+    async verifyOrderSummary(): Promise<{
+        subtotal: number;
+        shipping: number;
+        paymentFee: number;
+        tax: number;
+        total: number;
+    }> {
+        return {
+            subtotal: await this.getOrderSubtotal(),
+            shipping: await this.getOrderShippingCost(),
+            paymentFee: await this.getOrderPaymentFee(),
+            tax: await this.getOrderTax(),
+            total: await this.getOrderTotal(),
+        };
     }
 
     /* Billing & Shipping info dispaly methods*/
