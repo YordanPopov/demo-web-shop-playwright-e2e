@@ -4,7 +4,14 @@ import { expect, Page } from '@playwright/test';
 import PageFactory from '@pages/Page.factory';
 
 /* Types */
-import { Address, PaymentMethod, ShippingMethod } from '@types';
+import {
+    Address,
+    PaymentMethod,
+    ShippingMethod,
+    BillingInfo,
+    ShippingInfo,
+    OrderSummary,
+} from '@types';
 
 export default class CheckoutSteps extends PageFactory {
     constructor(page: Page) {
@@ -94,13 +101,7 @@ export default class CheckoutSteps extends PageFactory {
         expect(this.page).toHaveURL(/.*completed.*/);
     }
 
-    async checkOrderSummary(expectedData: {
-        subtotal?: number;
-        shipping?: number;
-        paymentFee?: number;
-        tax?: number;
-        total?: number;
-    }): Promise<void> {
+    async checkOrderSummary(expectedData: OrderSummary): Promise<void> {
         const orderSummary = await this.checkoutPage.verifyOrderSummary();
 
         if (expectedData.subtotal !== undefined) {
@@ -124,73 +125,91 @@ export default class CheckoutSteps extends PageFactory {
         }
     }
 
-    async checkBillingInfo(expectedData: {
-        name?: string;
-        email?: string;
-        phone?: string;
-        address?: string;
-        country?: string;
-        paymentMethod?: string;
-    }): Promise<void> {
+    async checkBillingInfo(expectedBillingInfo: BillingInfo): Promise<void> {
         const billingInfo = await this.checkoutPage.getBillingDisplayInfo();
 
-        if (expectedData.name !== undefined) {
-            expect.soft(expectedData.name).toBe(billingInfo.name);
+        if (expectedBillingInfo.name !== undefined) {
+            expect.soft(expectedBillingInfo.name).toBe(billingInfo.name);
         }
 
-        if (expectedData.email !== undefined) {
-            expect.soft(expectedData.email).toBe(billingInfo.email);
+        if (expectedBillingInfo.email !== undefined) {
+            expect.soft(expectedBillingInfo.email).toBe(billingInfo.email);
         }
 
-        if (expectedData.phone !== undefined) {
-            expect.soft(expectedData.phone).toBe(billingInfo.phone);
+        if (expectedBillingInfo.phone !== undefined) {
+            expect.soft(expectedBillingInfo.phone).toBe(billingInfo.phone);
         }
 
-        if (expectedData.address !== undefined) {
-            expect.soft(expectedData.address).toBe(billingInfo.address);
+        if (expectedBillingInfo.address !== undefined) {
+            expect.soft(expectedBillingInfo.address).toBe(billingInfo.address);
         }
 
-        if (expectedData.country !== undefined) {
-            expect.soft(expectedData.country).toBe(billingInfo.country);
+        if (expectedBillingInfo.country !== undefined) {
+            expect.soft(expectedBillingInfo.country).toBe(billingInfo.country);
         }
 
-        if (expectedData.paymentMethod !== undefined) {
-            expect.soft(expectedData.paymentMethod).toBe(billingInfo.paymentMethod);
+        if (expectedBillingInfo.paymentMethod !== undefined) {
+            expect.soft(expectedBillingInfo.paymentMethod).toBe(billingInfo.paymentMethod);
         }
     }
 
-    async checkShippingInfo(expectedData: {
-        name?: string;
-        email?: string;
-        phone?: string;
-        address?: string;
-        country?: string;
-        shippingMethod?: string;
-    }): Promise<void> {
+    async checkShippingInfo(expectedShippingInfo: ShippingInfo): Promise<void> {
         const shippingInfo = await this.checkoutPage.getShippingDisplayInfo();
 
-        if (expectedData.name !== undefined) {
-            expect.soft(expectedData.name).toBe(shippingInfo.name);
+        if (expectedShippingInfo.name !== undefined) {
+            expect.soft(expectedShippingInfo.name).toBe(shippingInfo.name);
         }
 
-        if (expectedData.email !== undefined) {
-            expect.soft(expectedData.email).toBe(shippingInfo.email);
+        if (expectedShippingInfo.email !== undefined) {
+            expect.soft(expectedShippingInfo.email).toBe(shippingInfo.email);
         }
 
-        if (expectedData.phone !== undefined) {
-            expect.soft(expectedData.phone).toBe(shippingInfo.phone);
+        if (expectedShippingInfo.phone !== undefined) {
+            expect.soft(expectedShippingInfo.phone).toBe(shippingInfo.phone);
         }
 
-        if (expectedData.address !== undefined) {
-            expect.soft(expectedData.address).toBe(shippingInfo.address);
+        if (expectedShippingInfo.address !== undefined) {
+            expect.soft(expectedShippingInfo.address).toBe(shippingInfo.address);
         }
 
-        if (expectedData.country !== undefined) {
-            expect.soft(expectedData.country).toBe(shippingInfo.country);
+        if (expectedShippingInfo.country !== undefined) {
+            expect.soft(expectedShippingInfo.country).toBe(shippingInfo.country);
         }
 
-        if (expectedData.shippingMethod !== undefined) {
-            expect.soft(expectedData.shippingMethod).toBe(shippingInfo.shippingMethod);
+        if (expectedShippingInfo.shippingMethod !== undefined) {
+            expect.soft(expectedShippingInfo.shippingMethod).toBe(shippingInfo.shippingMethod);
         }
+    }
+
+    async completeCheckoutWithSavedAdresses(
+        expectedPaymentInfo: string,
+        orderSummary: OrderSummary,
+        shippingMethod?: ShippingMethod,
+        paymentMethod?: PaymentMethod
+    ): Promise<void> {
+        await this.completeBillingAddressWithExisting();
+        await this.completeShippingAddressWithExisting();
+        await this.completeShippingMethod(shippingMethod);
+        await this.completePaymentMethod(paymentMethod);
+        await this.completePaymentInfo(expectedPaymentInfo);
+        await this.checkOrderSummary(orderSummary);
+        await this.completeOrder();
+    }
+
+    async completeCheckoutWithNewAddresses(
+        billingAddress: Address,
+        shippingAddress: Address,
+        expectedPaymentInfo: string,
+        orderSummary: OrderSummary,
+        shippingMethod?: ShippingMethod,
+        paymentMethod?: PaymentMethod
+    ): Promise<void> {
+        await this.completeBillingAddressWithNew(billingAddress);
+        await this.completeShippingAddressWithNew(shippingAddress);
+        await this.completeShippingMethod(shippingMethod);
+        await this.completePaymentMethod(paymentMethod);
+        await this.completePaymentInfo(expectedPaymentInfo);
+        await this.checkOrderSummary(orderSummary);
+        await this.completeOrder();
     }
 }
