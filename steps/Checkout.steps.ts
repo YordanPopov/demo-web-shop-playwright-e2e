@@ -98,7 +98,7 @@ export default class CheckoutSteps extends PageFactory {
     async completeOrder(): Promise<void> {
         await this.checkoutPage.confirmOrder();
 
-        expect(this.page).toHaveURL(/.*completed.*/);
+        expect.soft(this.page).toHaveURL(/.*completed.*/);
     }
 
     async checkOrderSummary(expectedData: OrderSummary): Promise<void> {

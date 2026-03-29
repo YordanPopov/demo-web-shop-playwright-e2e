@@ -156,7 +156,7 @@ export default class CheckoutPage extends BasePage {
 
         /* Step 3: Shipping method  */
         this.shippingMethodSection = page.locator('#checkout-step-shipping-method');
-        this.shippingMethodRadios = page.locator('.shipping-method input[type="radio"]');
+        this.shippingMethodRadios = page.locator('.shipping-method');
         this.shippingMethodBackButton = page.locator('#shipping-method-buttons-container p a');
         this.shippingMethodContinueButton = page.locator(
             '#shipping-method-buttons-container input[type="button"]'
@@ -164,7 +164,7 @@ export default class CheckoutPage extends BasePage {
 
         /* Step 4: Payment method */
         this.paymentMethodSection = page.locator('#checkout-step-payment-method');
-        this.paymentMethodRadios = page.locator('.payment-method input[type="radio"]');
+        this.paymentMethodRadios = page.locator('.payment-method');
         this.paymentMethodBackButton = page.locator('#payment-method-buttons-container p a');
         this.paymentMethodContinueButton = page.locator(
             '#payment-method-buttons-container input[type="button"]'
@@ -301,7 +301,9 @@ export default class CheckoutPage extends BasePage {
 
     /* Step 3: Shipping method actions*/
     async selectShippingMethod(methodName: ShippingMethod): Promise<void> {
-        await this.shippingMethodRadios.filter({ hasText: methodName }).check();
+        const label = this.page.locator(`.method-name label:has-text("${methodName}")`);
+        const forAttr = await label.getAttribute('for');
+        await this.shippingMethodRadios.locator(`#${forAttr}`).check();
     }
 
     async continueToPaymentMethod(): Promise<void> {
@@ -316,7 +318,9 @@ export default class CheckoutPage extends BasePage {
 
     /* Step 4: Payment method actions */
     async selectPaymentMethod(methodName: PaymentMethod): Promise<void> {
-        await this.paymentMethodRadios.filter({ hasText: methodName }).check();
+        const label = this.page.locator(`.method-name label:has-text("${methodName}")`);
+        const forAttr = await label.getAttribute('for');
+        await this.paymentMethodRadios.locator(`#${forAttr}`).check();
     }
 
     async continueToPaymentInformation(): Promise<void> {
@@ -331,7 +335,7 @@ export default class CheckoutPage extends BasePage {
 
     /* Step 5: Payment information methods */
     async getPaymentInformation(): Promise<string> {
-        const paymentInfo = (await this.paymentInfoText.textContent())?.trim();
+        const paymentInfo = (await this.paymentInfoText.nth(0).textContent())?.trim();
         return paymentInfo || '';
     }
 
