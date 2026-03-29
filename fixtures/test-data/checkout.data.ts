@@ -5,6 +5,7 @@ import type {
     OrderSummary,
     ShippingMethod,
     PaymentMethod,
+    CategorySlug,
 } from '@types';
 
 interface LoginData {
@@ -12,9 +13,41 @@ interface LoginData {
     password: string;
 }
 
+interface DefaultProduct {
+    category: CategorySlug;
+    productTitle: string;
+    qty: number;
+}
+
+export interface CheckoutCase {
+    description: string;
+    billingAddress: Address;
+    shippingAddress: Address;
+    shippingMethod: ShippingMethod;
+    paymentMethod: PaymentMethod;
+    expectedPaymentInfo: string;
+    expectedOrderSummary: OrderSummary;
+    expectedBillingInfo: BillingInfo;
+    expectedShippingInfo: ShippingInfo;
+}
+
+export interface CheckoutWithSavedAddressesCase {
+    description: string;
+    shippingMethod: ShippingMethod;
+    paymentMethod: PaymentMethod;
+    expectedPaymentInfo: string;
+    expectedOrderSummary: OrderSummary;
+}
+
 export const CHECKOUT_USER: LoginData = {
     email: 'tester_yo@email.com',
     password: 'test1234',
+};
+
+export const DEFAULT_PRODUCT: DefaultProduct = {
+    category: 'books',
+    productTitle: 'Computing and Internet',
+    qty: 1,
 };
 
 export const US_BILLING_ADDRESS: Address = {
@@ -66,3 +99,54 @@ export const EU_SHIPPING_ADDRESS: Address = {
     postalCode: '1000',
     phoneNumber: '+359 2 000 0001',
 };
+
+export const SAVED_ADDRESS_CHECKOUT_CASES: CheckoutWithSavedAddressesCase[] = [
+    {
+        description: 'Checkout with saved addresses | Ground shipping | Cash On Delivery',
+        shippingMethod: 'Ground (0.00)',
+        paymentMethod: 'Cash On Delivery (COD) (7.00)',
+        expectedPaymentInfo: 'You will pay by COD',
+        expectedOrderSummary: {
+            subtotal: 10.0,
+            shipping: 0,
+            paymentFee: 7.0,
+            total: 17.0,
+        },
+    },
+    {
+        description: 'Checkout with saved addresses | Next Day Air | Cash On Delivery',
+        shippingMethod: 'Next Day Air (0.00)',
+        paymentMethod: 'Cash On Delivery (COD) (7.00)',
+        expectedPaymentInfo: 'You will pay by COD',
+        expectedOrderSummary: {
+            subtotal: 10.0,
+            shipping: 0,
+            paymentFee: 7.0,
+            total: 17.0,
+        },
+    },
+    {
+        description: 'Checkout with saved addresses | 2nd Day Air | Cash On Delivery',
+        shippingMethod: '2nd Day Air (0.00)',
+        paymentMethod: 'Cash On Delivery (COD) (7.00)',
+        expectedPaymentInfo: 'You will pay by COD',
+        expectedOrderSummary: {
+            subtotal: 10.0,
+            shipping: 0,
+            paymentFee: 7.0,
+            total: 17.0,
+        },
+    },
+    {
+        description: 'Checkout with saved addresses | 2nd Day Air | Check / Money Order',
+        shippingMethod: '2nd Day Air (0.00)',
+        paymentMethod: 'Check / Money Order (5.00)',
+        expectedPaymentInfo: "Mail Personal or Business Check, Cashier's Check or money order to:",
+        expectedOrderSummary: {
+            subtotal: 10.0,
+            shipping: 0,
+            paymentFee: 5.0,
+            total: 15.0,
+        },
+    },
+];
