@@ -210,12 +210,17 @@ export default class CheckoutPage extends BasePage {
     }
 
     /* Step 1: Billing address methods */
+    async selectNewBillingAddress(): Promise<void> {
+        await this.billingAddressSelect.selectOption({ label: 'New Address' });
+    }
 
     async selectExistingBillingAddress(addressText: string): Promise<void> {
         await this.billingAddressSelect.selectOption({ label: addressText });
     }
 
     async fillNewBillingAddress(billingAddress: Address): Promise<void> {
+        await this.selectNewBillingAddress();
+
         await this.billingFirstName.fill(billingAddress.fisrtName);
         await this.billingLastName.fill(billingAddress.lastName);
         await this.billingEmail.fill(billingAddress.email);
@@ -251,11 +256,17 @@ export default class CheckoutPage extends BasePage {
     }
 
     /* Step 2: Shipping address methods */
+    async selectNewShippingAddress(): Promise<void> {
+        await this.shippingAddressSelect.selectOption({ label: 'New Address' });
+    }
+
     async selectExistingShippingAddress(addressText: string): Promise<void> {
         await this.shippingAddressSelect.selectOption({ label: addressText });
     }
 
     async fillNewShippingAddress(shippingAddress: Address): Promise<void> {
+        await this.selectNewShippingAddress();
+
         await this.shippingFirstName.fill(shippingAddress.fisrtName);
         await this.shippingLastName.fill(shippingAddress.lastName);
         await this.shippingEmail.fill(shippingAddress.email);
