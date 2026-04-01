@@ -73,6 +73,8 @@ test.describe('Checkout - New Address', () => {
                 await checkoutSteps.completeCheckoutWithNewAddresses(
                     testCase.billingAddress,
                     testCase.shippingAddress,
+                    testCase.expectedBillingInfo,
+                    testCase.expectedShippingInfo,
                     testCase.expectedPaymentInfo,
                     testCase.expectedOrderSummary,
                     testCase.shippingMethod,
