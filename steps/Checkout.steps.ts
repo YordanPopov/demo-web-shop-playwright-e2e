@@ -199,6 +199,8 @@ export default class CheckoutSteps extends PageFactory {
     async completeCheckoutWithNewAddresses(
         billingAddress: Address,
         shippingAddress: Address,
+        expectedBillingInfo: BillingInfo,
+        expectedShippingInfo: ShippingInfo,
         expectedPaymentInfo: string,
         orderSummary: OrderSummary,
         shippingMethod?: ShippingMethod,
@@ -209,6 +211,8 @@ export default class CheckoutSteps extends PageFactory {
         await this.completeShippingMethod(shippingMethod);
         await this.completePaymentMethod(paymentMethod);
         await this.completePaymentInfo(expectedPaymentInfo);
+        await this.checkBillingInfo(expectedBillingInfo);
+        await this.checkShippingInfo(expectedShippingInfo);
         await this.checkOrderSummary(orderSummary);
         await this.completeOrder();
     }
